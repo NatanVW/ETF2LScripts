@@ -1,6 +1,5 @@
-import requests
-from ETF2lBase import getCompList, getTeamIDs, dateHourToUnix, getTransfers, setGameMode, getTeamDiv
-from HijackAndSkillContribBase import teamSkillHS, transferCheck, getPlayerSkillHS, getSkillContrib6s, getSkillContribHL, activeLineup
+from BaseFunctions.ETF2lBase import getCompList, getTeamIDs, dateHourToUnix, getTransfers, setGameMode, getTeamDiv
+from BaseFunctions.HijackAndSkillContribBase import teamSkillHS, transferCheck, getPlayerSkillHS, activeLineup
 
 # Set the 2 competition ID's and the ID of the competition from which on forward results should be taken into account
 #currentMainCompID = 605

@@ -1,6 +1,5 @@
-import requests
-from ETF2lBase import getCompList, getTeamIDs, getPlayers, getTeamName
-from ETF2LSkillCheck import playerSkill, getPlayerSkill, teamSkill
+from BaseFunctions.ETF2lBase import getCompList, getPlayers, getTeamName
+from BaseFunctions.ETF2LSkillCheck import getPlayerSkill, teamSkill
 
 # Set the competition ID and the ID of the competition from which on forward results should be taken into account
 currentMainCompID = 609

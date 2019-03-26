@@ -1,7 +1,7 @@
-from ETF2lBase import getTeamIDs, getCompList, getPlayers, getSteamID64
-from ETF2LSkillCheck import getPlayerSkill, playerSkill, higherSkillCheckETF2LFMC
-from RGLSkillCheck import getPlayerHistory, getDivisionPlayed, higherSkillCheckRGL
-from UGCSkillCheck import getPlayerHonors, higherSkillCheckUGC
+from BaseFunctions.ETF2lBase import getCompList, getPlayers, getSteamID64
+from BaseFunctions.ETF2LSkillCheck import getPlayerSkill, higherSkillCheckETF2LFMC
+from BaseFunctions.RGLSkillCheck import getPlayerHistory, getDivisionPlayed, higherSkillCheckRGL
+from BaseFunctions.UGCSkillCheck import getPlayerHonors, higherSkillCheckUGC
 
 compID = 607
 oldCompID = 1
