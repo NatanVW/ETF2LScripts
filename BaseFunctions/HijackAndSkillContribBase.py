@@ -1,6 +1,6 @@
 import requests
-from ETF2lBase import getTeamDiv
-from  ETF2LSkillCheck import playerSkill
+from BaseFunctions.ETF2lBase import getTeamDiv
+from BaseFunctions.ETF2LSkillCheck import playerSkill
 
 # generate a list of all players that joined and left the team based off of API output.
 def transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck):
