@@ -25,9 +25,10 @@ def getPlayerHonors(id64):
 
     return playerSeasonPlayed
 
-def higherSkillCheckUGC(playerSeasonPlayed, higherSkilledPlayerIDListUGC, playerID):
+def higherSkillCheckUGC(playerSeasonPlayed, higherSkilledPlayerIDListUGC, playerID, id64List, id64):
     for i in range(0,len(playerSeasonPlayed)):
         if "Platinum" in playerSeasonPlayed[i] or "Premium" in playerSeasonPlayed[i] or "Gold" in playerSeasonPlayed[i] or "Silver" in playerSeasonPlayed[i]:
             if higherSkilledPlayerIDListUGC.count(playerID) == 0:
                 higherSkilledPlayerIDListUGC.append(playerID)
-    return higherSkilledPlayerIDListUGC
+                id64List.append(id64)
+    return higherSkilledPlayerIDListUGC, id64List

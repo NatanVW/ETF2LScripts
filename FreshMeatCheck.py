@@ -14,6 +14,7 @@ def main(compID):
         higherSkilledPlayerIDListRGL =[]
         RGLNameList = []
         higherSkilledPlayerIDListUGC = []
+        id64List = []
         playerIDList = getPlayers(teamID)
         for playerID in playerIDList:
             # ETF2L skill check
@@ -30,7 +31,7 @@ def main(compID):
 
             # UGC skill check
             playerHonors =  getPlayerHonors(id64)
-            higherSkilledPlayerIDListUGC = higherSkillCheckUGC(playerHonors, higherSkilledPlayerIDListUGC, playerID)
+            higherSkilledPlayerIDListUGC, id64List = higherSkillCheckUGC(playerHonors, higherSkilledPlayerIDListUGC, playerID, id64List, id64)
 
         if higherSkilledPlayerIDListETF2L != [] or higherSkilledPlayerIDListRGL != [] or higherSkilledPlayerIDListUGC != []:
             print("[team id =" + str(teamID) + "]:")
@@ -49,7 +50,7 @@ def main(compID):
             if higherSkilledPlayerIDListUGC != []:
                 print("has " + str(len(higherSkilledPlayerIDListUGC)) + " UGC players with a to high skill level to participate in the cup:")
                 for k in range(0,len(higherSkilledPlayerIDListUGC)):
-                    print("[player id =" + str(higherSkilledPlayerIDListUGC[k]) + "], UGC profile: https://www.ugcleague.com/players_page.cfm?player_id=" + str(id64))
+                    print("[player id =" + str(higherSkilledPlayerIDListUGC[k]) + "], UGC profile: https://www.ugcleague.com/players_page.cfm?player_id=" + str(id64List[k]))
                 print("")
 
 
