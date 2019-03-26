@@ -34,16 +34,16 @@ def higherSkillCheckRGL(seasonsPlayed,divisionsPlayed, matchCount, higherSkilled
     for i in range(0,len(seasonsPlayed)):
         if "Season" in seasonsPlayed[i]:
             if divisionsPlayed[i] != "RGL-Open":
-                if higherSkilledPlayerIDListRGL.count(playerID) == 0:
-                    higherSkilledPlayerIDListRGL.append(playerID)
+                higherSkilledPlayerIDListRGL.append(playerID)
+                return higherSkilledPlayerIDListRGL
             elif divisionsPlayed[i] == "RGL-Open" and matchCount[i] >=10:
-                if higherSkilledPlayerIDListRGL.count(playerID) == 0:
-                    higherSkilledPlayerIDListRGL.append(playerID)
+                higherSkilledPlayerIDListRGL.append(playerID)
+                return higherSkilledPlayerIDListRGL
         if "MM" in seasonsPlayed[i]:
             if divisionsPlayed[i] != "Open":
-                if higherSkilledPlayerIDListRGL.count(playerID) == 0:
-                    higherSkilledPlayerIDListRGL.append(playerID)
+                higherSkilledPlayerIDListRGL.append(playerID)
+                return higherSkilledPlayerIDListRGL
             elif divisionsPlayed[i] == "Open" and matchCount[i] >=10:
-                if higherSkilledPlayerIDListRGL.count(playerID) == 0:
-                    higherSkilledPlayerIDListRGL.append(playerID)
+                higherSkilledPlayerIDListRGL.append(playerID)
+                return higherSkilledPlayerIDListRGL
     return higherSkilledPlayerIDListRGL
