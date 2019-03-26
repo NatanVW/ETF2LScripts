@@ -1,5 +1,5 @@
-from BaseFunctions.ETF2lBase import getCompList, getPlayers, getSteamID64
-from BaseFunctions.ETF2LSkillCheck import getPlayerSkill, higherSkillCheckETF2LFMC
+from BaseFunctions.ETF2lBase import getCompList, getPlayers, getSteamID64, getTeamIDs
+from BaseFunctions.ETF2LSkillCheck import getPlayerSkill, higherSkillCheckETF2LFMC, playerSkill
 from BaseFunctions.RGLSkillCheck import getPlayerHistory, getDivisionPlayed, higherSkillCheckRGL
 from BaseFunctions.UGCSkillCheck import getPlayerHonors, higherSkillCheckUGC
 
@@ -8,8 +8,7 @@ oldCompID = 1
 
 def main(compID):
     compList6v6, compListHL = getCompList(oldCompID, compID)
-    #teamIDList = getTeamIDs(compID)
-    teamIDList = ['19942']
+    teamIDList = getTeamIDs(compID)
     for teamID in teamIDList:
         higherSkilledPlayerIDListETF2L =[]
         higherSkilledPlayerIDListRGL =[]
