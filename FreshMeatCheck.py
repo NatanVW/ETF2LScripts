@@ -3,10 +3,13 @@ from BaseFunctions.ETF2LSkillCheck import getPlayerSkill, higherSkillCheckETF2LF
 from BaseFunctions.RGLSkillCheck import getPlayerHistory, getDivisionPlayed, higherSkillCheckRGL
 from BaseFunctions.UGCSkillCheck import getPlayerHonors, higherSkillCheckUGC
 
+# Set the competition ID and the ID of the competition from which on forward results should be taken into account
 compID = 607
 oldCompID = 1
 
-def main(compID):
+# Don't edit anything past this point if you have no idea what you are doing
+
+def main(compID, oldCompID):
     compList6v6, compListHL = getCompList(oldCompID, compID)
     teamIDList = getTeamIDs(compID)
     for teamID in teamIDList:
@@ -54,4 +57,4 @@ def main(compID):
                 print("")
 
 
-main(compID)
+main(compID, oldCompID)

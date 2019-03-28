@@ -1,37 +1,39 @@
 from BaseFunctions.ETF2lBase import getCompList, getTeamIDs, dateHourToUnix, getTransfers, setGameMode, getTeamDiv
 from BaseFunctions.HijackAndSkillContribBase import teamSkillHS, transferCheck, getPlayerSkillHS, activeLineup
 
-# Set the 2 competition ID's and the ID of the competition from which on forward results should be taken into account
-#currentMainCompID = 605
-#currentTopCompID = 607
-#oldCompID = 534
-currentMainCompID = 609
-currentTopCompID = 611
-oldCompID = 540
-
-#Input the date and time the provisional tiers were released. Also input how far back the system should look for results of teams and players.
-#date= "25/01/2019"
-#hour = "23:59:00"
-date= "8/03/2019"
-hour = "18:00:00"
-daysToCheck = 7
 
 # Input the gamemode that needs to be checked. HL for highlander, 6s for 6v6
 gameType = "HL"
 
+# Set the 2 competition ID's and the ID of the competition from which on forward results should be taken into account
+currentMainCompID6s = 605
+currentTopCompID6s = 607
+oldCompID6s = 534
+currentMainCompIDHL = 609
+currentTopCompIDHL = 611
+oldCompIDHL = 540
+
+#Input the date and time the provisional tiers were released. Also input how far back the system should look for results of teams and players.
+date6s= "25/01/2019"
+hour6s = "23:59:00"
+dateHL= "8/03/2019"
+hourHL = "18:00:00"
+daysToCheck = 7
+
 # Input the player id of players allowed as late joiners, between '' seperated by commas
-#allowedPlayerIDlist = ['134441','131389','103093','130003','132451','121701','107775','6524','131404','119619','20688','133443','88995','32632','131255','']
-allowedPlayerIDlist = ['96704','105085','122594','126619','93063','118721','82109','125630']
+allowedPlayerIDlist6s = ['134441','131389','103093','130003','132451','121701','107775','6524','131404','119619','20688','133443','88995','32632','131255','']
+allowedPlayerIDlistHL = ['96704','105085','122594','126619','93063','118721','82109','125630']
 
+# Don't edit anything past this point if you have no idea what you are doing
 
-def main(currentMainCompID, currentTopCompID, oldCompID, date, hour, daysToCheck, gameType, allowedPlayerIDlist):
+def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s, hour6s, dateHL, hourHL, daysToCheck, gameType, allowedPlayerIDlist6s, allowedPlayerIDlistHL):
 
-    activeJoinLimit, skillContribLimit = setGameMode(gameType)
+    activeJoinLimit, skillContribLimit, currentMainCompID, currentTopCompID, oldCompID, date, hour, allowedPlayerIDlist = setGameMode(gameType, currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s, hour6s, dateHL, hourHL, allowedPlayerIDlist6s, allowedPlayerIDlistHL)
     provisionalsRelease = dateHourToUnix(date,hour)
     compList6v6, compListHL = getCompList(oldCompID, currentTopCompID)
-    fullCompList6v6, fullCompListHL = getCompList(1, currentTopCompID)
+    fullCompList6v6, fullCompListHL = getCompList(1, currentMainCompID)
     teamIDList = getTeamIDs(currentMainCompID)
-
+    previousFMC = 0
 
     for teamID in teamIDList:
         activePlayerIDlist = []
@@ -59,7 +61,7 @@ def main(currentMainCompID, currentTopCompID, oldCompID, date, hour, daysToCheck
                         activePlayer = activePlayer + 1
                         if playerID not in activePlayerIDlist:
                             activePlayerIDlist.append(playerID)
-                    playerHL, player6s, HLMatchCount, SMatchCount = getPlayerSkillHS(playerID, teamDiv, fullCompList6v6,fullCompListHL, compList6v6, compListHL)
+                    playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = getPlayerSkillHS(playerID, teamDiv, fullCompList6v6,fullCompListHL, compList6v6, compListHL, previousFMC)
                     team6s, teamHl, skillContribTotal6s, skillContribTotalHL, waterfall = teamSkillHS(player6s, playerHL, team6s, teamHL,  skillContribTotal6s, skillContribTotalHL, HLMatchCount, SMatchCount, playerID, teamID, activePlayerIDlist, waterfall, currentMainCompID, currentTopCompID)
 
         # Log output to the cosole for each team
@@ -88,4 +90,4 @@ def main(currentMainCompID, currentTopCompID, oldCompID, date, hour, daysToCheck
             for waterfallID in waterfall:
                 print("[player id = " + str(waterfallID) + "], has three or more games played in different divisions, check his profile")
 
-main(currentMainCompID, currentTopCompID, oldCompID, date, hour, daysToCheck, gameType, allowedPlayerIDlist)
+main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s, hour6s, dateHL, hourHL, daysToCheck, gameType, allowedPlayerIDlist6s, allowedPlayerIDlistHL)

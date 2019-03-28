@@ -5,6 +5,8 @@ from BaseFunctions.ETF2LSkillCheck import getPlayerSkill, teamSkill
 currentMainCompID = 609
 oldCompID = 530
 
+# Don't edit anything past this point if you have no idea what you are doing
+
 def main(oldCompId, compID):
     compList6v6, compListHL = getCompList(oldCompID, compID)
     teamIDList = getTeamIDs(compID)
