@@ -62,7 +62,7 @@ def setGameMode(gameType):
 
 
     elif gameType == "HL":
-        activeJoinLimit = 4
+        activeJoinLimit = 5
 
         skillContribLimit = 3
 
