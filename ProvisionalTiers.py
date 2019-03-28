@@ -6,8 +6,7 @@ currentMainCompID = 609
 oldCompID = 530
 
 def main(oldCompId, compID):
-
-    compList6v6, compListHL = getCompList(oldCompID, currentMainCompID)
+    compList6v6, compListHL = getCompList(oldCompID, compID)
     teamIDList = getTeamIDs(compID)
     for teamID in teamIDList:
         teamHL = dict(prem=0, div1=0, high=0, mid=0, low=0, open=0, none=0)

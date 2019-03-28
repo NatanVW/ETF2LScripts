@@ -34,7 +34,6 @@ def main(currentMainCompID, currentTopCompID, oldCompID, date, hour, daysToCheck
 
 
     for teamID in teamIDList:
-        #print(teamID)
         activePlayerIDlist = []
         teamHL = dict(prem=0, div1=0, high=0, mid=0, low=0, open=0, none=0)
         team6s = dict(prem=0, div1=0, div2=0, mid=0, low=0, open=0, none=0)

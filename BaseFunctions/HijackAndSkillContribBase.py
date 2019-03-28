@@ -120,9 +120,9 @@ def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6,fullCompListHL, compList
         # Get ya data
         compID = str(match['competition']['id'])
         tierName = match['division']['name']
-        if tierName == None:
-            continue
         playOff = match['competition']['name']
+        if tierName == None and "Playoffs" not in playOff:
+            continue
         week = match['week']
         if teamDiv == "Fresh":
             playerHL, player6s, HLMatchCount, SMatchCount = playerSkill(compID, fullCompList6v6,fullCompListHL, playOff,tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week)
