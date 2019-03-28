@@ -52,7 +52,7 @@ def getPlayers(teamID):
     return playerIDList
 
 #Configures the script to work for the correct gamemode.
-def setGameMode(gameType):
+def setGameMode(gameType, currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s, hour6s, dateHL, hourHL, allowedPlayerIDlist6s, allowedPlayerIDlistHL):
     if gameType == "6s":
         # Amount of active late players allowed to join after provisional tier release
         activeJoinLimit = 3
@@ -60,14 +60,27 @@ def setGameMode(gameType):
         # Skill contribution point limit, set to 2 for 6s and 3 for HL
         skillContribLimit = 2
 
+        # Set correct competitions ID's, date and hour of provisionals release for the gamemode
+        currentMainCompID = currentMainCompID6s
+        currentTopCompID = currentTopCompID6s
+        oldCompID = oldCompID6s
+        date = date6s
+        hour = hour6s
+        allowedPlayerIDlist = allowedPlayerIDlist6s
 
     elif gameType == "HL":
         activeJoinLimit = 5
 
         skillContribLimit = 3
 
+        currentMainCompID = currentMainCompIDHL
+        currentTopCompID = currentTopCompIDHL
+        oldCompID = oldCompIDHL
+        date = dateHL
+        hour = hourHL
+        allowedPlayerIDlist = allowedPlayerIDlistHL
 
-    return activeJoinLimit, skillContribLimit
+    return activeJoinLimit, skillContribLimit, currentMainCompID, currentTopCompID, oldCompID, date, hour, allowedPlayerIDlist
 
 # Unix timestamps for when the provisionals are published.
 def dateHourToUnix(date,hour):
