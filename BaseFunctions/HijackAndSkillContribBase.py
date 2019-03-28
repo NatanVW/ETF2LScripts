@@ -88,7 +88,7 @@ def activeLineup(teamID, playerID, daysToCheck):
     return activeLineup
 
 # Get skill level per player
-def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6,fullCompListHL, compList6v6, compListHL):
+def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6,fullCompListHL, compList6v6, compListHL, previousFMC):
     resultsUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?per_page=100&since=0"
     data = requests.get(resultsUrl).json()
     totalPages = data['page']['total_pages']
@@ -125,11 +125,11 @@ def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6,fullCompListHL, compList
             continue
         week = match['week']
         if teamDiv == "Fresh":
-            playerHL, player6s, HLMatchCount, SMatchCount = playerSkill(compID, fullCompList6v6,fullCompListHL, playOff,tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week)
+            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, fullCompList6v6,fullCompListHL, playOff,tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week, previousFMC)
         else:
-            playerHL, player6s, HLMatchCount, SMatchCount = playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week)
+            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week, previousFMC)
 
-    return playerHL, player6s, HLMatchCount, SMatchCount
+    return playerHL, player6s, HLMatchCount, SMatchCount, previousFMC
 
 # Add player to overall team stats, look at skill comparison with team
 def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL, HLMatchCount, SMatchCount, playerID, teamID, activePlayerIDlist, waterfall, currentMainCompID, currentTopCompID):
