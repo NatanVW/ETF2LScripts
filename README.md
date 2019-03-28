@@ -12,6 +12,4 @@ The easiest way to install packages is using pip. Read up on https://packaging.p
 
 Required packages:
 
-requests
-BeautifulSoup
-lxml
+requests, BeautifulSoup, lxml
