@@ -30,20 +30,29 @@ def getDivisionPlayed(playerHistory):
             matchCount.append(played['Wins'] + played['Loses'])
     return seasonsPlayed, divisionsPlayed, matchCount
 
-def higherSkillCheckRGL(seasonsPlayed,divisionsPlayed, matchCount, higherSkilledPlayerIDListRGL, playerID):
+def higherSkillCheckRGL(seasonsPlayed,divisionsPlayed, matchCount, higherSkilledPlayerIDListRGL, playerID, id64List, id64, RGLNameList, name):
     for i in range(0,len(seasonsPlayed)):
         if "Season" in seasonsPlayed[i]:
             if divisionsPlayed[i] != "RGL-Open":
                 higherSkilledPlayerIDListRGL.append(playerID)
-                return higherSkilledPlayerIDListRGL
+                RGLNameList.append(name)
+                id64List.append(id64)
+                return higherSkilledPlayerIDListRGL, id64List, RGLNameList
             elif divisionsPlayed[i] == "RGL-Open" and matchCount[i] >=10:
                 higherSkilledPlayerIDListRGL.append(playerID)
-                return higherSkilledPlayerIDListRGL
+                RGLNameList.append(name)
+                id64List.append(id64)
+                return higherSkilledPlayerIDListRGL, id64List, RGLNameList
         if "MM" in seasonsPlayed[i]:
             if divisionsPlayed[i] != "Open":
                 higherSkilledPlayerIDListRGL.append(playerID)
-                return higherSkilledPlayerIDListRGL
+                RGLNameList.append(name)
+                id64List.append(id64)
+                return higherSkilledPlayerIDListRGL, id64List, RGLNameList
             elif divisionsPlayed[i] == "Open" and matchCount[i] >=10:
                 higherSkilledPlayerIDListRGL.append(playerID)
-                return higherSkilledPlayerIDListRGL
-    return higherSkilledPlayerIDListRGL
+                RGLNameList.append(name)
+                id64List.append(id64)
+                return higherSkilledPlayerIDListRGL, id64List, RGLNameList
+
+    return higherSkilledPlayerIDListRGL, id64List, RGLNameList
