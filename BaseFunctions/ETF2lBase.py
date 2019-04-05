@@ -120,3 +120,8 @@ def getSteamID64(playerID):
     url = "http://api.etf2l.org/player/" + str(playerID) + ".json"
     data = requests.get(url).json()
     return data['player']['steam']['id64']
+
+def getSteamID3(playerID):
+    url = "http://api.etf2l.org/player/" + str(playerID) + ".json"
+    data = requests.get(url).json()
+    return data['player']['steam']['id3']
