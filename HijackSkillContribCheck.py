@@ -3,12 +3,13 @@ from BaseFunctions.HijackAndSkillContribBase import teamSkillHS, transferCheck, 
 
 
 # Input the gamemode that needs to be checked. HL for highlander, 6s for 6v6
-gameType = "HL"
+gameType = "6s"
 
 # Set the 2 competition ID's and the ID of the competition from which on forward results should be taken into account
 currentMainCompID6s = 605
 currentTopCompID6s = 607
 oldCompID6s = 534
+
 currentMainCompIDHL = 609
 currentTopCompIDHL = 611
 oldCompIDHL = 540
@@ -16,6 +17,7 @@ oldCompIDHL = 540
 #Input the date and time the provisional tiers were released. Also input how far back the system should look for results of teams and players.
 date6s= "25/01/2019"
 hour6s = "23:59:00"
+
 dateHL= "8/03/2019"
 hourHL = "18:00:00"
 daysToCheck = 7
@@ -29,7 +31,7 @@ allowedPlayerIDlistHL = ['96704','105085','122594','126619','93063','118721','82
 def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s, hour6s, dateHL, hourHL, daysToCheck, gameType, allowedPlayerIDlist6s, allowedPlayerIDlistHL):
 
     activeJoinLimit, skillContribLimit, currentMainCompID, currentTopCompID, oldCompID, date, hour, allowedPlayerIDlist = setGameMode(gameType, currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s, hour6s, dateHL, hourHL, allowedPlayerIDlist6s, allowedPlayerIDlistHL)
-    provisionalsRelease = dateHourToUnix(date,hour)
+    provisionalsRelease = dateHourToUnix(date, hour)
     compList6v6, compListHL = getCompList(oldCompID, currentTopCompID)
     fullCompList6v6, fullCompListHL = getCompList(1, currentMainCompID)
     teamIDList = getTeamIDs(currentMainCompID)
