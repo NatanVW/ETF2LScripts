@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-ID = 76561198044051538
-
 def getPlayerPage(ID):
     url = "https://warzone.ozfortress.com/users?q=" + str(ID)
     searchPage = requests.get(url).content
