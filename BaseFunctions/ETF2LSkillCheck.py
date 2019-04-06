@@ -49,7 +49,7 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
     if compID in compListHL:
         HLMatchCount = HLMatchCount + 1
         if "Playoffs" in playOff:
-            if "High" in playOff or "Division 1" in playOff or "Division 2" in playOff:
+            if "High" in playOff[22:] or "Division 1" in playOff or "Division 2" in playOff:
                 playerHL['prem'] += 1
             if "Mid" in playOff or "Division 3" in playOff or "Division 4" in playOff:
                 playerHL['high'] += 1
@@ -75,7 +75,6 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
                 playerHL['low'] += 1
             elif tierName == "Open" or "Division 6" in tierName:
                 playerHL['open'] += 1
-
 
     elif compID in compList6v6:
         SMatchCount = SMatchCount + 1
@@ -106,6 +105,7 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
                 player6s['low'] += 1
             elif tierName == "Open" or "Division 6" in tierName:
                 player6s['open'] += 1
+
     if int(compID) == 490:
         if week > 2:
             previousFMC = 1
