@@ -25,9 +25,9 @@ def getPlayerSkill(playerID, compList6v6, compListHL):
     HLMatchCount = 0
     SMatchCount = 0
 
-    for l in range(0, NoMachtesPlayed):
+    for i in range(0, NoMachtesPlayed):
         try:
-            match = totalResults[l]
+            match = totalResults[i]
         except TypeError:
             break
 
