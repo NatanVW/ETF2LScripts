@@ -7,6 +7,8 @@ def getPlayerPage(ID):
     html = BeautifulSoup(searchPage, "lxml")
     results = html.find("div", {"class":"user-details"})
     playerPage = []
+    if results == None:
+        return playerPage
     for a in results.find_all("a", href = True):
         playerPage.append(a['href'])
     playerPageUrl = "https://warzone.ozfortress.com" + playerPage[0]
@@ -39,4 +41,4 @@ def higherSkillCheckOZ(seasonPlayed, playerID, higherSkilledPlayerIDListOZ, OZPr
         higherSkilledPlayerIDListOZ.append(playerID)
         OZProfileList.append(OZProfile)
 
-    return higherSkilledPlayerIDListOZ
+    return higherSkilledPlayerIDListOZ, OZProfileList
