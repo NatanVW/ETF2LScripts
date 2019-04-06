@@ -81,7 +81,7 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
                 print("[player id = " + str(activePlayerID) + "]")
             print("6S skill of joiners: " + str(Sseperate))
             print("6S skill  contirbution of joiners cummulitative: " + str(skillContribTotal6s))
-            print("HL skill of joiners:" + str(Hlseperate))
+            print("HL skill of joiners: " + str(Hlseperate))
             print("HL skill contirbution of joiners cummulitative: " + str(skillContribTotalHL) + "\n")
             for waterfallID in waterfall:
                 print("[player id = " + str(waterfallID) + "], has three or more games played in different divisions, check his profile")
