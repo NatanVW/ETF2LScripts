@@ -6,22 +6,30 @@ def getPlayerHonors(id64):
     url = "https://www.ugcleague.com/players_page.cfm?player_id=" + str(id64)
     playerPage = requests.get(url).content
     html = BeautifulSoup(playerPage, "lxml")
-    playerHonorsGameModes = []
-    for i in range(0,2):
+    playerRows = []
+    i=0
+    while i is not None:
         try:
-            playerHonorsGameModes.append(html.find_all('ul', {"class": "list-unstyled"})[i])
+            playerRows.append(html.find_all('div', {"class": "row-fluid"})[i])
+            i += 1
         except IndexError:
-            break
+            i = None
     playerSeasonPlayedHtml = []
     playerSeasonPlayed = []
-    for j in range(0, len(playerHonorsGameModes)+1):
-        for k in range(0,60):
-            try:
-                playerSeasonPlayedHtml.append(playerHonorsGameModes[j].find_all("div",{"style":"line-height:19px;"})[k])
-            except IndexError:
-                break
-    for l in range(0,len(playerSeasonPlayedHtml)):
-        playerSeasonPlayed.append(playerSeasonPlayedHtml[l].text.split("\n")[0])
+    for i in range(0,len(playerRows)):
+        try:
+            if playerRows[i].find('h5').text == "TF2 Highlander Medals" or playerRows[i].find('h5').text == "TF2 6vs6 Medals":
+                k = 0
+                while k is not None:
+                    try:
+                        playerSeasonPlayedHtml.append(playerRows[i].find_all("div", {"style": "line-height:19px;"})[k])
+                        k += 1
+                    except IndexError:
+                        k = None
+        except AttributeError:
+            continue
+    for i in range(0,len(playerSeasonPlayedHtml)):
+        playerSeasonPlayed.append(playerSeasonPlayedHtml[i].text.split("\n")[0])
 
     return playerSeasonPlayed
 
