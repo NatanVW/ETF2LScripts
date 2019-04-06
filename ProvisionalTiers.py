@@ -16,7 +16,7 @@ def main(oldCompId, compID):
         playerIDList = getPlayers(teamID)
         teamName = getTeamName(teamID)
         for playerID in playerIDList:
-            playerHL, player6s, HLMatchCount, SMatchCount= getPlayerSkill(playerID, compList6v6, compListHL)
+            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = getPlayerSkill(playerID, compList6v6, compListHL)
             team6s, teamHl= teamSkill(player6s, playerHL, team6s, teamHL, HLMatchCount, SMatchCount)
 
         Sseperate = 'Prem: ' + str(team6s['prem']) + ', Div1: ' + str(team6s['div1']) + ', Div2: ' + str(team6s['div2']) + ', Mid: ' + str(team6s['mid']) + ', Low: ' + str(team6s['low']) + ', Open: ' + str(team6s['open']) + ', None: ' + str(team6s['none'])
