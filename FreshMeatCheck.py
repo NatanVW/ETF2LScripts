@@ -45,33 +45,35 @@ def main(compID, oldCompID):
 
             # OZFortress skill check
             playerPage = getPlayerPage(id64)
+            if playerPage == []:
+                continue
             seasonsPlayed = getSeasonsPlayed(playerPage)
             higherSkilledPlayerIDListOZ, OZProfileList = higherSkillCheckOZ(seasonsPlayed, playerID, higherSkilledPlayerIDListOZ, playerPage, OZProfileList)
 
         if higherSkilledPlayerIDListETF2L != [] or higherSkilledPlayerIDListRGL != [] or higherSkilledPlayerIDListUGC != [] or higherSkilledPlayerIDListOZ != []:
             print("[team id = " + str(teamID) + "]:")
             if higherSkilledPlayerIDListETF2L != []:
-                print("has " + str(len(higherSkilledPlayerIDListETF2L)) + " ETF2L players with a to high skill level to participate in the cup:")
+                print("has " + str(len(higherSkilledPlayerIDListETF2L)) + " ETF2L player(s) with a to high skill level to participate in the cup:")
                 for i in range(0,len(higherSkilledPlayerIDListETF2L)):
                     print("[player id =" + str(higherSkilledPlayerIDListETF2L[i]) + "]")
                 print("")
 
             if higherSkilledPlayerIDListRGL != []:
-                print("has " + str(len(higherSkilledPlayerIDListRGL)) + " RGL players with a to high skill level to participate in the cup:")
-                for j in range(0,len(higherSkilledPlayerIDListRGL)):
-                    print("[player id =" + str(higherSkilledPlayerIDListRGL[j]) + "], RGL name: " + str(RGLNameList[j]) + " and steamid64: " + str(id64ListRGL[j]))
+                print("has " + str(len(higherSkilledPlayerIDListRGL)) + " RGL player(s) with a to high skill level to participate in the cup:")
+                for i in range(0,len(higherSkilledPlayerIDListRGL)):
+                    print("[player id =" + str(higherSkilledPlayerIDListRGL[i]) + "], RGL name: " + str(RGLNameList[i]) + " and steamid64: " + str(id64ListRGL[i]))
                 print("")
 
             if higherSkilledPlayerIDListUGC != []:
-                print("has " + str(len(higherSkilledPlayerIDListUGC)) + " UGC players with a to high skill level to participate in the cup:")
-                for k in range(0,len(higherSkilledPlayerIDListUGC)):
-                    print("[player id =" + str(higherSkilledPlayerIDListUGC[k]) + "], UGC profile: https://www.ugcleague.com/players_page.cfm?player_id=" + str(id64ListUGC[k]))
+                print("has " + str(len(higherSkilledPlayerIDListUGC)) + " UGC player(s) with a to high skill level to participate in the cup:")
+                for i in range(0,len(higherSkilledPlayerIDListUGC)):
+                    print("[player id =" + str(higherSkilledPlayerIDListUGC[i]) + "], UGC profile: https://www.ugcleague.com/players_page.cfm?player_id=" + str(id64ListUGC[i]))
                 print("")
 
             if higherSkilledPlayerIDListOZ != []:
-                print("has " + str(len(higherSkilledPlayerIDListOZ)) + " OZFortress players with a to high skill level to participate in the cup:")
-                for n in range(0, len(higherSkilledPlayerIDListOZ)):
-                    print("[player id =" + str(higherSkilledPlayerIDListOZ[n]) + "], OZFortress profile:" + str(OZProfileList[n]))
+                print("has " + str(len(higherSkilledPlayerIDListOZ)) + " OZFortress player(s) with a to high skill level to participate in the cup:")
+                for i in range(0, len(higherSkilledPlayerIDListOZ)):
+                    print("[player id =" + str(higherSkilledPlayerIDListOZ[i]) + "], OZFortress profile:" + str(OZProfileList[i]))
                 print("")
 
 
