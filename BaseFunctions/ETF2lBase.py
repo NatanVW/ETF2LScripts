@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime
+from bs4 import BeautifulSoup
 
 # Get a list of all teams from given compID.
 def getTeamIDs(compID):
@@ -141,7 +142,10 @@ def getETTF2Lfromid64(ID):
             i = None
 
     forumLink = searchResults[0].find("ul")
-    for a in forumLink.find_all("a", href = True):
-        playerPage.append(a['href'])
+    try:
+        for a in forumLink.find_all("a", href = True):
+            playerPage.append(a['href'])
+    except AttributeError:
+        return playerPage
 
     return playerPage[0]
