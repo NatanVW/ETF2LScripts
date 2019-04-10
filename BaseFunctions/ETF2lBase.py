@@ -125,3 +125,23 @@ def getSteamID3(playerID):
     url = "http://api.etf2l.org/player/" + str(playerID) + ".json"
     data = requests.get(url).json()
     return data['player']['steam']['id3']
+
+def getETTF2Lfromid64(ID):
+    url = "http://etf2l.org/search/" + str(ID)
+    searchPage = requests.get(url).content
+    html = BeautifulSoup(searchPage, "lxml")
+    searchResults = []
+    playerPage = []
+    i = 0
+    while i is not None:
+        try:
+            searchResults.append(html.find_all("div",{"class":"post"})[i])
+            i +=1
+        except IndexError:
+            i = None
+
+    forumLink = searchResults[0].find("ul")
+    for a in forumLink.find_all("a", href = True):
+        playerPage.append(a['href'])
+
+    return playerPage[0]
