@@ -1,6 +1,8 @@
 import requests
-from BaseFunctions.ETF2lBase import getTeamDiv
+
 from BaseFunctions.ETF2LSkillCheck import playerSkill
+from BaseFunctions.ETF2lBase import getTeamDiv
+
 
 # generate a list of all players that joined and left the team based off of API output.
 def transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck):
@@ -34,15 +36,17 @@ def transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck):
         if transferList[playerID]['timeJoined'] != [] and transferList[playerID]['timeLeft'] != []:
             if len(transferList[playerID]['timeJoined']) > 1 and len(transferList[playerID]['timeLeft']) > 1:
                 if len(transferList[playerID]['timeJoined']) > len(transferList[playerID]['timeLeft']):
-                    for j in range(len(transferList[playerID]['timeJoined'])-1,0,-1):
+                    for j in range(len(transferList[playerID]['timeJoined']) - 1, 0, -1):
                         transferList[playerID]['timeJoined'].remove(transferList[playerID]['timeJoined'][j])
                     transferList[playerID]['timeLeft'] = []
-                elif len(transferList[playerID]['timeJoined']) == len(transferList[playerID]['timeLeft']) or len(transferList[playerID]['timeJoined']) < len(transferList[playerID]['timeLeft']):
+                elif len(transferList[playerID]['timeJoined']) == len(transferList[playerID]['timeLeft']) or len(transferList[playerID]['timeJoined']) < len(
+                        transferList[playerID]['timeLeft']):
                     transferList[playerID]['timeLeft'] = []
-                    transferList[playerID]['timeJoined'] =[]
+                    transferList[playerID]['timeJoined'] = []
             else:
                 if transferList[playerID]['timeLeft'][0] > transferList[playerID]['timeJoined'][0]:
-                    resultsUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?per_page=100&days=" + str(daysToCheck)  # since=" + str(transferList[playerID]['timeJoined'][0][0])
+                    resultsUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?per_page=100&days=" + str(
+                        daysToCheck)  # since=" + str(transferList[playerID]['timeJoined'][0][0])
                     data = requests.get(resultsUrl).json()
                     results = data['results']
                     try:
@@ -67,6 +71,7 @@ def transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck):
 
     return playerIDListJoined, totalJoins
 
+
 # See how many of the late joined players played in the matches.
 def activeLineup(teamID, playerID, daysToCheck):
     teamUrl = "http://api.etf2l.org/team/" + str(teamID) + "/results.json?days=" + str(daysToCheck) + "&per_page=100"
@@ -87,8 +92,9 @@ def activeLineup(teamID, playerID, daysToCheck):
                 activeLineup = activeLineup + 1
     return activeLineup
 
+
 # Get skill level per player
-def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6,fullCompListHL, compList6v6, compListHL, previousFMC):
+def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compList6v6, compListHL, previousFMC):
     resultsUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?per_page=100&since=0"
     data = requests.get(resultsUrl).json()
     totalPages = data['page']['total_pages']
@@ -125,14 +131,18 @@ def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6,fullCompListHL, compList
             continue
         week = match['week']
         if teamDiv == "Fresh":
-            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, fullCompList6v6,fullCompListHL, playOff,tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week, previousFMC)
+            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, fullCompList6v6, fullCompListHL, playOff, tierName, playerHL, player6s, HLMatchCount,
+                                                                                     SMatchCount, playerID, week, previousFMC)
         else:
-            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week, previousFMC)
+            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount,
+                                                                                     playerID, week, previousFMC)
 
     return playerHL, player6s, HLMatchCount, SMatchCount, previousFMC
 
+
 # Add player to overall team stats, look at skill comparison with team
-def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL, HLMatchCount, SMatchCount, playerID, teamID, activePlayerIDlist, waterfall, currentMainCompID, currentTopCompID):
+def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL, HLMatchCount, SMatchCount, playerID, teamID, activePlayerIDlist, waterfall, currentMainCompID,
+                currentTopCompID):
     if player6s['prem'] >= 3:
         team6s['prem'] += 1
         playerScore = 6
@@ -221,12 +231,13 @@ def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillCo
         teamHL['none'] += 1
     if 0 <= SMatchCount < 3:
         team6s['none'] += 1
-    if HLMatchCount >=3 and all(value < 3 for value in playerHL.values()):
+    if HLMatchCount >= 3 and all(value < 3 for value in playerHL.values()):
         waterfall.append(str(playerID))
-    if SMatchCount >=3 and all(value < 3 for value in player6s.values()):
+    if SMatchCount >= 3 and all(value < 3 for value in player6s.values()):
         waterfall.append(str(playerID))
 
     return team6s, teamHL, skillContribTotal6s, skillContribTotalHL, waterfall
+
 
 # Calculates the total of the teams potential 6s skill contrib.
 def getSkillContrib6s(teamID, playerScore, currentMainCompID, currentTopCompID):
@@ -250,12 +261,13 @@ def getSkillContrib6s(teamID, playerScore, currentMainCompID, currentTopCompID):
         if playerScore > 2:
             skillContrib += (playerScore - 2)
         return skillContrib
-    elif teamDivName == "Fresh"  or teamDivName == "Open":
+    elif teamDivName == "Fresh" or teamDivName == "Open":
         if playerScore > 1:
             skillContrib += (playerScore - 1)
         return skillContrib
 
     return 0
+
 
 # Calculates the total of the teams potential HL skill contrib.
 def getSkillContribHL(teamID, playerScore, currentMainCompID, currentTopCompID):
@@ -277,7 +289,7 @@ def getSkillContribHL(teamID, playerScore, currentMainCompID, currentTopCompID):
         if playerScore > 3:
             skillContrib += (playerScore - 3)
         return skillContrib
-    elif teamDivName == "Low"  or teamDivName == "Open":
+    elif teamDivName == "Low" or teamDivName == "Open":
         if playerScore > 2:
             skillContrib += (playerScore - 2)
         return skillContrib

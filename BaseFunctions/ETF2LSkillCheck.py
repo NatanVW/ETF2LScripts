@@ -1,5 +1,6 @@
 import requests
 
+
 # Get skill level per player
 def getPlayerSkill(playerID, compList6v6, compListHL):
     resultsUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?per_page=100&since=0"
@@ -39,9 +40,11 @@ def getPlayerSkill(playerID, compList6v6, compListHL):
             continue
 
         week = match['week']
-        playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week, previousFMC)
+        playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID,
+                                                                                 week, previousFMC)
 
     return playerHL, player6s, HLMatchCount, SMatchCount, previousFMC
+
 
 # Support function for getPlayerSkill, will do the calculations
 def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week, previousFMC):
@@ -112,6 +115,7 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
 
     return playerHL, player6s, HLMatchCount, SMatchCount, previousFMC
 
+
 # Add player to overall team stats, look at skill comparison with team
 def teamSkill(player6s, playerHL, team6s, teamHL, HLMatchCount, SMatchCount):
     if player6s['prem'] >= 3:
@@ -156,6 +160,7 @@ def teamSkill(player6s, playerHL, team6s, teamHL, HLMatchCount, SMatchCount):
         team6s['none'] += 1
 
     return team6s, teamHL
+
 
 # Check if player has to high of a skill level to play in the cup
 def higherSkillCheckETF2LFMC(player6s, playerHL, HLMatchCount, SMatchCount, playerID, higherSkilledPlayerIDList, previousFMC):

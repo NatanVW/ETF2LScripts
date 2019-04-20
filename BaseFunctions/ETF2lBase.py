@@ -1,7 +1,8 @@
-import requests
 from datetime import datetime
+
+import requests
 from bs4 import BeautifulSoup
-import warnings
+
 
 # Get a list of all teams from given compID.
 def getTeamIDs(compID):
@@ -18,11 +19,12 @@ def getTeamIDs(compID):
 
     return sorted(idList)
 
+
 # Search for all the seasons that happend within the old comp -> new comp range.
 def getCompList(oldID, currentID):
     compList6v6 = []
     compListHL = []
-    for i in range(oldID, currentID+1):
+    for i in range(oldID, currentID + 1):
         compURL = "http://api.etf2l.org/competition/" + str(i) + ".json"
         data = requests.get(compURL).json()
         try:
@@ -35,6 +37,7 @@ def getCompList(oldID, currentID):
             compListHL.append(str(i))
 
     return compList6v6, compListHL
+
 
 # Get all players ID's on a team
 def getPlayers(teamID):
@@ -51,8 +54,10 @@ def getPlayers(teamID):
 
     return playerIDList
 
-#Configures the script to work for the correct gamemode.
-def setGameMode(gameType, currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s, hour6s, dateHL, hourHL, allowedPlayerIDlist6s, allowedPlayerIDlistHL):
+
+# Configures the script to work for the correct gamemode.
+def setGameMode(gameType, currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s, hour6s, dateHL, hourHL, allowedPlayerIDlist6s,
+                allowedPlayerIDlistHL):
     if gameType == "6s":
         # Amount of active late players allowed to join after provisional tier release
         activeJoinLimit = 3
@@ -80,16 +85,21 @@ def setGameMode(gameType, currentMainCompID6s, currentTopCompID6s, oldCompID6s, 
         hour = hourHL
         allowedPlayerIDlist = allowedPlayerIDlistHL
 
+    else:
+        raise KeyError("An incorrect gametype was selected, please pick either HL or 6s")
+
     return activeJoinLimit, skillContribLimit, currentMainCompID, currentTopCompID, oldCompID, date, hour, allowedPlayerIDlist
 
+
 # Unix timestamps for when the provisionals are published.
-def dateHourToUnix(date,hour):
+def dateHourToUnix(date, hour):
     dateHour = list(reversed(date.split("/")))
     dateHour += hour.split(":")
-    dateHourInt = [ int(x) for x in dateHour ]
-    unixTime = datetime(dateHourInt[0],dateHourInt[1],dateHourInt[2],dateHourInt[3],dateHourInt[4],dateHourInt[5]).timestamp()
+    dateHourInt = [int(x) for x in dateHour]
+    unixTime = datetime(dateHourInt[0], dateHourInt[1], dateHourInt[2], dateHourInt[3], dateHourInt[4], dateHourInt[5]).timestamp()
 
     return unixTime
+
 
 # Get all players that joined after the release of the provisional tiers
 def getTransfers(teamID, provisionalsRelease):
@@ -98,6 +108,7 @@ def getTransfers(teamID, provisionalsRelease):
     transfers = data['transfers']
 
     return transfers
+
 
 # Check the division the team is in
 def getTeamDiv(ID, currentMainCompID, currentTopCompID):
@@ -108,6 +119,7 @@ def getTeamDiv(ID, currentMainCompID, currentTopCompID):
     elif data['team']['competitions'][str(currentTopCompID)]['division']['name'] is not None:
         return data['team']['competitions'][str(currentTopCompID)]['division']['name']
 
+
 def getTeamName(teamID):
     teamUrl = "http://api.etf2l.org/team/" + str(teamID) + ".json"
     data = requests.get(teamUrl).json()
@@ -115,15 +127,18 @@ def getTeamName(teamID):
 
     return name
 
+
 def getSteamID64(playerID):
     url = "http://api.etf2l.org/player/" + str(playerID) + ".json"
     data = requests.get(url).json()
     return data['player']['steam']['id64']
 
+
 def getSteamID3(playerID):
     url = "http://api.etf2l.org/player/" + str(playerID) + ".json"
     data = requests.get(url).json()
     return data['player']['steam']['id3']
+
 
 def getETTF2Lfromid64(ID):
     url = "http://etf2l.org/search/" + str(ID)
@@ -134,14 +149,14 @@ def getETTF2Lfromid64(ID):
     i = 0
     while i is not None:
         try:
-            searchResults.append(html.find_all("div",{"class":"post"})[i])
-            i +=1
+            searchResults.append(html.find_all("div", {"class": "post"})[i])
+            i += 1
         except IndexError:
             i = None
 
     forumLink = searchResults[0].find("ul")
     try:
-        for a in forumLink.find_all("a", href = True):
+        for a in forumLink.find_all("a", href=True):
             playerPage.append(a['href'])
     except AttributeError:
         return playerPage
