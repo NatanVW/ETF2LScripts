@@ -1,6 +1,7 @@
 import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
+import warnings
 
 # Get a list of all teams from given compID.
 def getTeamIDs(compID):
@@ -23,8 +24,7 @@ def getCompList(oldID, currentID):
     compListHL = []
     for i in range(oldID, currentID+1):
         compURL = "http://api.etf2l.org/competition/" + str(i) + ".json"
-        response = requests.get(compURL)
-        data = response.json()
+        data = requests.get(compURL).json()
         try:
             category = data['competition']['category']
         except KeyError:
@@ -42,13 +42,12 @@ def getPlayers(teamID):
     teamUrl = "http://api.etf2l.org/team/" + str(teamID) + ".json"
     data = requests.get(teamUrl).json()
     team = data['team']['players']
-    try:
-        len(team)
-    except TypeError:
-        return playerIDList
-    for i in range(0, len(team)):
-        player = team[i]
-        playerIDList.append(player['id'])
+    if team == None:
+        print("Warning: [team id =" + str(teamID) + "] ,the API didn't parse the player list for this team correctly. \n")
+    else:
+        for i in range(0, len(team)):
+            player = team[i]
+            playerIDList.append(player['id'])
 
     return playerIDList
 
@@ -102,7 +101,6 @@ def getTransfers(teamID, provisionalsRelease):
 
 # Check the division the team is in
 def getTeamDiv(ID, currentMainCompID, currentTopCompID):
-    #print(ID)
     url = "http://api.etf2l.org/team/" + str(ID) + ".json"
     data = requests.get(url).json()
     if data['team']['competitions'][str(currentMainCompID)]['division']['name'] is not None:
