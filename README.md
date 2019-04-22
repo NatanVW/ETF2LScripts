@@ -10,7 +10,11 @@ Scripts for various skill checks, mostly ETF2L related
 
 #### Required packages:
 
-The easiest way to install packages is using pip. Read up on https://packaging.python.org/tutorials/installing-packages/#installing-from-pypi
+The easiest way to install the required packages is running the requirements file, this will install all the required packages for you.
+To do so all you have to do is run the following command "pip install -r requirements.txt" in your terminal.
+
+If this for some reason does not work you can manually install the required packages listed below. 
+Read up on https://packaging.python.org/tutorials/installing-packages/#installing-from-pypi if u have no idea how to do this.
 * requests
 * BeautifulSoup 
 * lxml
