@@ -1,0 +1,5 @@
+# File containing the needed packages for easier install.
+# To run this file run "pip install -r requirements.txt" in your terminal.
+requests
+beautifulsoup4
+lxml
