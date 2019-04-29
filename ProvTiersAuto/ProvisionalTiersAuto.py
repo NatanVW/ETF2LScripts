@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append('\Etf2lScriptPackage\BaseFunctions')
+sys.path.append('\Etf2lScripts\BaseFunctions')
 
 import gspread
 import math
