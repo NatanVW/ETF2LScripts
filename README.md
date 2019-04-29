@@ -1,6 +1,8 @@
 # ETF2L Scripts
 Scripts for various skill checks, mostly ETF2L related
 
+Automatic provisional tiers is still very much a work in progress, to set it up properly you will need a file not uploaded here for security reasons.
+All other scripts will work fine when setup properly
 
 ### Requirements:
 
@@ -18,6 +20,8 @@ Read up on https://packaging.python.org/tutorials/installing-packages/#installin
 * requests
 * BeautifulSoup 
 * lxml
+* gspread
+* oauth2client
 
 ### Usage:
 
