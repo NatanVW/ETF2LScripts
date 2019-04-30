@@ -8,7 +8,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 
 from BaseFunctions.ETF2LSkillCheck import getPlayerSkill, teamSkill
 from BaseFunctions.ETF2lBase import getCompList, getPlayers, getTeamName
-from ProvTiersAuto.ProvTiersBase import makeTeamDict, getTeamIDList
+from ProvTiersAuto.ProvTiersBase import makeTeamDict, getTeamIDList, setGameMode
 
 # Input the team ID list and the requested tier list
 idList = []
@@ -21,6 +21,12 @@ oldCompID = 530
 # Enter the name of the season, will be used as the worksheet title
 seasonName = "Highlander Season 18"
 
+# Input the gamemode that needs to be checked. HL for highlander, 6s for 6v6
+gameType = "HL"
+
+# Input whether you want to make the "Base sheet" or the sheet to "iframe", leave blank to generate both
+sheetMode = ""
+
 # Don't edit anything past this point if you have no idea what you are doing
 
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
@@ -29,15 +35,41 @@ client = gspread.authorize(creds)
 
 sheet = client.open('ETF2L Provisional Tiers')
 
+def main(gameType, idList, requestList, sheetMode):
+    if sheetMode == "Base sheet":
+        divList, teamIDList, counterDict, teamDict = setup(gameType, idList, requestList)
+        mainSheet(oldCompID, currentMainCompID, divList, teamIDList, counterDict, teamDict)
 
-def mainSheet(oldCompID, compID, idList, requestList):
-    baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="1000", cols="20")
-    compList6v6, compListHL = getCompList(oldCompID, compID)
+    if sheetMode == "iframe":
+        divList, teamIDList, counterDict, teamDict = setup(gameType, idList, requestList)
+        iframeSheet(counterDict, divList)
+
+    if sheetMode == "":
+        divList, teamIDList, counterDict, teamDict = setup(gameType, idList, requestList)
+        mainSheet(oldCompID, currentMainCompID, divList, teamIDList, counterDict, teamDict)
+        iframeSheet(counterDict, divList)
+
+
+def setup(gameType, idList, requestList):
+    divList = setGameMode(gameType)
     teamDict = makeTeamDict(idList, requestList)
     teamIDList, counterDict = getTeamIDList(teamDict)
-    premCounter, highCounter, midCounter, lowCounter, openCounter = counterDict["Premiership"], counterDict["High"], counterDict["Mid"], counterDict["Low"], counterDict["Open"]
+
+    if gameType == "HL":
+        counterDict["Open"] += counterDict["Low"]
+        counterDict.pop("Low")
+
+    return divList, teamIDList, counterDict, teamDict
+
+
+def mainSheet(oldCompID, compID, divList, teamIDList, counterDict, teamDict):
+    baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="1000", cols="20")
+    compList6v6, compListHL = getCompList(oldCompID, compID)
+    counterList = []
+    for value in counterDict.values():
+        counterList.append(value)
     i = 1
-    row = ["Premiership", "", "", "Players on roster", "Requested", "", "", "6s total", "6s seperate", "HL total", "HL total"]
+    row = ["Premiership", "", "Players on roster", "Requested", "", "", "6s total", "6s seperate", "HL total", "HL total"]
     baseSheet.insert_row(row, i)
     i += 1
     for teamID in teamIDList:
@@ -58,100 +90,52 @@ def mainSheet(oldCompID, compID, idList, requestList):
         teamLink = "http://etf2l.org/teams/" + str(teamID)
         teamLinkName = '=HYPERLINK("' + teamLink + '";"' + teamName + '")'
 
-        if premCounter >= 0:
-            if premCounter == 0:
-                baseSheet.insert_row(["Premiership", ], i)
-                i += 1
-                baseSheet.insert_row(["High", ], i)
-                i += 1
-                highCounter -= 1
-            premCounter -= 1
-        elif highCounter >= 0:
-            if highCounter == 0:
-                baseSheet.insert_row(["High", ], i)
-                i += 1
-                baseSheet.insert_row(["Mid", ], i)
-                i += 1
-                midCounter -= 1
-            highCounter -= 1
-        elif midCounter >= 0:
-            if midCounter == 0:
-                baseSheet.insert_row(["Mid", ], i)
-                i += 1
-                baseSheet.insert_row(["Open", ], i)
-                i += 1
-                lowCounter -= 1
-            midCounter -= 1
-        elif lowCounter >= 0:
-            lowCounter -= 1
-        elif openCounter >= 0:
-            if openCounter == 0:
-                baseSheet.insert_row(["Open", ], i)
-                i += 1
-            openCounter -= 1
+        print(teamID, counterList)
 
-        row = [str(teamID), teamLinkName, teamName, str(len(playerIDList)), teamDict[teamID], "", "", str(STotal), Sseperate, str(HlTotal), Hlseperate]
-        baseSheet.insert_row(row, i, value_input_option='USER_ENTERED')
-        i += 1
+        for k in range(0, len(counterList)):
+            if counterList[k] >= 0:
+                if counterList[k] == 0:
+                    baseSheet.insert_row([divList[k]], i)
+                    i += 1
+                    try:
+                        baseSheet.insert_row([divList[k + 1]], i)
+                        i += 1
+                    except IndexError:
+                        break
+                    counterList[k + 1] -= 1
+                counterList[k] -= 1
 
-    return counterDict
+                row = [str(teamID), teamLinkName, str(len(playerIDList)), teamDict[teamID], "", "", str(STotal), Sseperate, str(HlTotal), Hlseperate]
+                baseSheet.insert_row(row, i, value_input_option='USER_ENTERED')
+                i += 1
+                break
 
 
-def iframeSheet(counterDict):
-    counterDictSum = counterDict["Premiership"] + counterDict["High"] + counterDict["Mid"] + counterDict["Low"] + counterDict["Open"]
-    prem, high, mid, open = "Premiership", "High", "Mid", "Open"
+def iframeSheet(counterDict, divList):
+    counterDictSum = 0
+    for value in counterDict.values():
+        counterDictSum += value
+
     frameSheet = sheet.add_worksheet(title=seasonName, rows=counterDictSum / 2 + 9, cols="2")
-    frameSheet.update_cell(1, 1, prem)
+    frameSheet.update_cell(1, 1, divList[0])
     j = 2
     k = j
-    for i in range(k, counterDict["Premiership"] + k):
-        referenceSheet = "='" + seasonName + " Base'!B" + str(j)
-        if i < math.ceil(counterDict["Premiership"] / 2) + k:
-            frameSheet.update_cell(i, 1, referenceSheet)
-        else:
-            frameSheet.update_cell(i - math.ceil(counterDict["Premiership"] / 2), 2, referenceSheet)
-        j += 1
-    frameSheet.update_cell(k + math.ceil(counterDict["Premiership"] / 2), 1, prem)
-    frameSheet.update_cell(k + 1 + math.ceil(counterDict["Premiership"] / 2), 1, high)
+    for l in range(0, len(divList)):
+        for i in range(k, counterDict[divList[l]] + k):
+            referenceSheet = "='" + seasonName + " Base'!B" + str(j)
+            if i < math.ceil(counterDict[divList[l]] / 2) + k:
+                frameSheet.update_cell(i, 1, referenceSheet)
+            else:
+                frameSheet.update_cell(i - math.ceil(counterDict[divList[l]] / 2), 2, referenceSheet)
+            j += 1
 
-    j += 2
-    cell = frameSheet.find("High")
-    k = cell.row + 1
-    for i in range(k, counterDict["High"] + k):
-        referenceSheet = "='" + seasonName + " Base'!B" + str(j)
-        if i < math.ceil(counterDict["High"] / 2 + k):
-            frameSheet.update_cell(i, 1, referenceSheet)
-        else:
-            frameSheet.update_cell(i - math.ceil(counterDict["High"] / 2), 2, referenceSheet)
-        j += 1
-    frameSheet.update_cell(k + math.ceil(counterDict["High"] / 2), 1, high)
-    frameSheet.update_cell(k + 1 + math.ceil(counterDict["High"] / 2), 1, mid)
+        frameSheet.update_cell(k + math.ceil(counterDict[divList[l]] / 2), 1, divList[l])
+        try:
+            frameSheet.update_cell(k + 1 + math.ceil(counterDict[divList[l]] / 2), 1, divList[l + 1])
+        except IndexError:
+            break
+        j += 2
+        cell = frameSheet.find(divList[l + 1])
+        k = cell.row + 1
 
-    j += 2
-    cell = frameSheet.find("Mid")
-    k = cell.row + 1
-    for i in range(k, counterDict["Mid"] + k):
-        referenceSheet = "='" + seasonName + " Base'!B" + str(j)
-        if i < math.ceil(counterDict["Mid"] / 2 + k):
-            frameSheet.update_cell(i, 1, referenceSheet)
-        else:
-            frameSheet.update_cell(i - math.ceil(counterDict["Mid"] / 2), 2, referenceSheet)
-        j += 1
-    frameSheet.update_cell(k + math.ceil(counterDict["Mid"] / 2), 1, mid)
-    frameSheet.update_cell(k + 1 + math.ceil(counterDict["Mid"] / 2), 1, open)
-
-    j += 2
-    cell = frameSheet.find("Open")
-    k = cell.row + 1
-    for i in range(k, counterDict["Open"] + counterDict["Low"] + k):
-        referenceSheet = "='" + seasonName + " Base'!B" + str(j)
-        if i < math.ceil((counterDict["Open"] + counterDict["Low"]) / 2 + k):
-            frameSheet.update_cell(i, 1, referenceSheet)
-        else:
-            frameSheet.update_cell(i - math.ceil((counterDict["Open"] + counterDict["Low"]) / 2), 2, referenceSheet)
-        j += 1
-    frameSheet.update_cell(k + math.ceil((counterDict["Open"] + counterDict["Low"]) / 2), 1, open)
-
-
-counterDict = mainSheet(oldCompID, currentMainCompID, idList, requestList)
-iframeSheet(counterDict)
+main(gameType, idList, requestList, sheetMode)
