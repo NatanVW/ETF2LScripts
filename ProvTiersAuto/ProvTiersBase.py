@@ -4,6 +4,7 @@ def makeTeamDict(idList, requestList):
     for i in range(0, len(idList)):
         update = {idList[i]: requestList[i]}
         teamDict.update(update)
+
     return teamDict
 
 
@@ -13,6 +14,7 @@ def getKeysByValue(dictOfElements, valueToFind):
     for item in listOfItems:
         if item[1] == valueToFind:
             listOfKeys.append(item[0])
+
     return listOfKeys
 
 
@@ -56,8 +58,22 @@ def getTeamIDList(teamDict):
             teamIDList.append(ID)
         update = {"Open": len(open)}
         counterDict.update(update)
+
     if none != []:
         for ID in none:
             teamIDList.append(ID)
 
     return teamIDList, counterDict
+
+
+def setGameMode(gameType):
+    if gameType == "HL":
+        divList = ["Premiership", "High", "Mid", "Open"]
+        return divList
+
+    if gameType == "6s":
+        divList = ["Premiership", "High", "Mid", "Low", "Fresh"]
+        return divList
+
+    else:
+        raise KeyError("An incorrect gametype was selected, please pick either HL or 6s")
