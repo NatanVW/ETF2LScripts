@@ -31,7 +31,7 @@ def getSeasonsPlayed(url):
     seasonsPlayed = []
     if panelHeadings[3].text == "Leagues":
         panelLists.append(html.find_all('ul', {"class": "list-group"})[2])
-    if panelLists is not []:
+    if panelLists != []:
         seasonsPlayedHtml.append(panelLists[0].find_all("li"))
         for j in range(0, len(seasonsPlayedHtml[0])):
             seasonsPlayed.append(seasonsPlayedHtml[0][j].text)
@@ -40,7 +40,7 @@ def getSeasonsPlayed(url):
 
 
 def higherSkillCheckOZ(seasonPlayed, playerID, higherSkilledPlayerIDListOZ, OZProfile, OZProfileList):
-    if seasonPlayed is not []:
+    if seasonPlayed != []:
         higherSkilledPlayerIDListOZ.append(playerID)
         OZProfileList.append(OZProfile)
 

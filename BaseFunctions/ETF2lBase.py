@@ -46,7 +46,7 @@ def getPlayers(teamID):
     data = requests.get(teamUrl).json()
     team = data['team']['players']
     if team == None:
-        print("Warning: [team id =" + str(teamID) + "] ,the API didn't parse the player list for this team correctly. \n")
+        print("Warning: [team id = " + str(teamID) + "] ,the API didn't parse the player list for this team correctly. \n")
     else:
         for i in range(0, len(team)):
             player = team[i]

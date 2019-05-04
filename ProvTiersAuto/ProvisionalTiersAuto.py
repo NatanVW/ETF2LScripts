@@ -35,6 +35,7 @@ client = gspread.authorize(creds)
 
 sheet = client.open('ETF2L Provisional Tiers')
 
+
 def main(gameType, idList, requestList, sheetMode):
     if sheetMode == "Base sheet":
         divList, teamIDList, counterDict, teamDict = setup(gameType, idList, requestList)
@@ -90,8 +91,6 @@ def mainSheet(oldCompID, compID, divList, teamIDList, counterDict, teamDict):
         teamLink = "http://etf2l.org/teams/" + str(teamID)
         teamLinkName = '=HYPERLINK("' + teamLink + '";"' + teamName + '")'
 
-        print(teamID, counterList)
-
         for k in range(0, len(counterList)):
             if counterList[k] >= 0:
                 if counterList[k] == 0:
@@ -137,5 +136,6 @@ def iframeSheet(counterDict, divList):
         j += 2
         cell = frameSheet.find(divList[l + 1])
         k = cell.row + 1
+
 
 main(gameType, idList, requestList, sheetMode)
