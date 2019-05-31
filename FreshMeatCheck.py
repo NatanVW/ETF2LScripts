@@ -12,7 +12,7 @@ buddyList = ['92243', '115603', '125750', '128505', '124029', '119817', '132120'
              '120821', '105723', '129856', '132748', '92166', '128843', '129693', '133392', '125974', '130747', '125288', '94955', '109742', '129461', '134022', '131198', '133068', '46526',
              '121437', '48288', '110553', '130585', '112758', '125319', '132189', '120255', '122019', '129763', '101292', '127614', '124688', '68635', '118996', '130898', '136112', '117770',
              '59560', '94026', '112699', '126040', '127879', '7243', '130169', '105093', '126757', '131140', '58862', '126665', '118980', '129551', '126473', '125181', '93023', '131953',
-             '131953', '70534']
+             '131953', '70534', '132604', '111829', '72348']
 
 
 # Don't edit anything past this point if you have no idea what you are doing
@@ -65,25 +65,25 @@ def main(compID, oldCompID, buddyList):
             if higherSkilledPlayerIDListETF2L != []:
                 print("has " + str(len(higherSkilledPlayerIDListETF2L)) + " ETF2L player(s) with a to high skill level to participate in the cup:")
                 for i in range(0, len(higherSkilledPlayerIDListETF2L)):
-                    print("[player id =" + str(higherSkilledPlayerIDListETF2L[i]) + "]")
+                    print("[player id = " + str(higherSkilledPlayerIDListETF2L[i]) + "]")
                 print("")
 
             if higherSkilledPlayerIDListRGL != []:
                 print("has " + str(len(higherSkilledPlayerIDListRGL)) + " RGL player(s) with a to high skill level to participate in the cup:")
                 for i in range(0, len(higherSkilledPlayerIDListRGL)):
-                    print("[player id =" + str(higherSkilledPlayerIDListRGL[i]) + "], RGL name: " + str(RGLNameList[i]) + " and steamid64: " + str(id64ListRGL[i]))
+                    print("[player id = " + str(higherSkilledPlayerIDListRGL[i]) + "], RGL name: " + str(RGLNameList[i]) + " and steamid64: " + str(id64ListRGL[i]))
                 print("")
 
             if higherSkilledPlayerIDListUGC != []:
                 print("has " + str(len(higherSkilledPlayerIDListUGC)) + " UGC player(s) with a to high skill level to participate in the cup:")
                 for i in range(0, len(higherSkilledPlayerIDListUGC)):
-                    print("[player id =" + str(higherSkilledPlayerIDListUGC[i]) + "], UGC profile: https://www.ugcleague.com/players_page.cfm?player_id=" + str(id64ListUGC[i]))
+                    print("[player id = " + str(higherSkilledPlayerIDListUGC[i]) + "], UGC profile: https://www.ugcleague.com/players_page.cfm?player_id=" + str(id64ListUGC[i]))
                 print("")
 
             if higherSkilledPlayerIDListOZ != []:
                 print("has " + str(len(higherSkilledPlayerIDListOZ)) + " OZFortress player(s) with a to high skill level to participate in the cup:")
                 for i in range(0, len(higherSkilledPlayerIDListOZ)):
-                    print("[player id =" + str(higherSkilledPlayerIDListOZ[i]) + "], OZFortress profile:" + str(OZProfileList[i]))
+                    print("[player id = " + str(higherSkilledPlayerIDListOZ[i]) + "], OZFortress profile:" + str(OZProfileList[i]))
                 print("")
             print("")
 
