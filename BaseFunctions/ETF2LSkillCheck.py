@@ -4,14 +4,12 @@ import requests
 # Get skill level per player
 def getPlayerSkill(playerID, compList6v6, compListHL):
     resultsUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?per_page=100&since=0"
-    data = requests.get(resultsUrl).json()
-    totalPages = data['page']['total_pages']
+    totalPages = requests.get(resultsUrl).json()['page']['total_pages']
     totalResults = []
     previousFMC = 0
     for i in range(1, totalPages + 1):
         APIplayerResults = "http://api.etf2l.org/player/" + str(playerID) + "/results/" + str(i) + ".json?per_page=100&since=0"
-        data = requests.get(APIplayerResults).json()
-        results = data['results']
+        results = requests.get(APIplayerResults).json()['results']
         try:
             totalResults += results
         except TypeError:

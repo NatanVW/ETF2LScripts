@@ -46,9 +46,8 @@ def transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck):
             else:
                 if transferList[playerID]['timeLeft'][0] > transferList[playerID]['timeJoined'][0]:
                     resultsUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?per_page=100&days=" + str(
-                        daysToCheck)  # since=" + str(transferList[playerID]['timeJoined'][0][0])
-                    data = requests.get(resultsUrl).json()
-                    results = data['results']
+                        daysToCheck)
+                    results = requests.get(resultsUrl).json()['results']
                     try:
                         len(results)
                     except TypeError:
@@ -76,10 +75,8 @@ def transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck):
 def activeLineup(teamID, playerID, daysToCheck):
     teamUrl = "http://api.etf2l.org/team/" + str(teamID) + "/results.json?days=" + str(daysToCheck) + "&per_page=100"
     playerUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?days=" + str(daysToCheck) + "&per_page=100"
-    teamData = requests.get(teamUrl).json()
-    playerData = requests.get(playerUrl).json()
-    teamResults = teamData['results']
-    playerResults = playerData['results']
+    teamResults = requests.get(teamUrl).json()['results']
+    playerResults = requests.get(playerUrl).json()['results']
     activeLineup = 0
     try:
         len(teamResults)
@@ -95,14 +92,11 @@ def activeLineup(teamID, playerID, daysToCheck):
 
 # Get skill level per player
 def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compList6v6, compListHL, previousFMC):
-    resultsUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?per_page=100&since=0"
-    data = requests.get(resultsUrl).json()
-    totalPages = data['page']['total_pages']
+    totalPages = requests.get(resultsUrl).json()['page']['total_pages']
     totalResults = []
     for i in range(1, totalPages + 1):
         APIplayerResults = "http://api.etf2l.org/player/" + str(playerID) + "/results/" + str(i) + ".json?per_page=100&since=0"
-        data = requests.get(APIplayerResults).json()
-        results = data['results']
+        results = requests.get(APIplayerResults).json()['results']
         try:
             totalResults += results
         except TypeError:

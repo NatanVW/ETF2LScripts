@@ -11,8 +11,7 @@ def getTeamIDs(compID):
     idList = []
     for i in range(1, totalPages + 1):
         pageUrl = "http://api.etf2l.org/competition/" + str(compID) + "/teams/" + str(i) + ".json?per_page=100"
-        data = requests.get(pageUrl).json()
-        teams = data['teams']
+        teams = requests.get(pageUrl).json()['teams']
         for ID in teams:
             idList.append(ID)
 
