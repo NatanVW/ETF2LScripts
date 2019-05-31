@@ -10,21 +10,21 @@ from BaseFunctions.ETF2LSkillCheck import getPlayerSkill, teamSkill
 from BaseFunctions.ETF2lBase import getCompList, getPlayers, getTeamName
 from ProvTiersAuto.ProvTiersBase import makeTeamDict, getTeamIDList, setGameMode
 
-# Input the team ID list and the requested tier list
-idList = []
-requestList = []
+# Input the team ID list and the requested tier list. Either input a list of strings or a string where each item is seperated by a tab
+idList = ""
+requestList = ""
 
 # Set the competition ID and the ID of the competition from which on forward results should be taken into account
-currentMainCompID = 609
-oldCompID = 530
+currentMainCompID =
+oldCompID =
 
 # Enter the name of the season, will be used as the worksheet title
-seasonName = "Highlander Season 18"
+seasonName = ""
 
 # Input the gamemode that needs to be checked. HL for highlander, 6s for 6v6
-gameType = "HL"
+gameType = ""
 
-# Input whether you want to make the "Base sheet" or the sheet to "iframe", leave blank to generate both
+# Input whether you want to make the "Base Sheet" or the sheet to "iframe", leave blank to generate both
 sheetMode = ""
 
 # Don't edit anything past this point if you have no idea what you are doing
@@ -37,7 +37,7 @@ sheet = client.open('ETF2L Provisional Tiers')
 
 
 def main(gameType, idList, requestList, sheetMode):
-    if sheetMode == "Base sheet":
+    if sheetMode == "Base Sheet":
         divList, teamIDList, counterDict, teamDict = setup(gameType, idList, requestList)
         mainSheet(oldCompID, currentMainCompID, divList, teamIDList, counterDict, teamDict)
 
@@ -64,7 +64,12 @@ def setup(gameType, idList, requestList):
 
 
 def mainSheet(oldCompID, compID, divList, teamIDList, counterDict, teamDict):
-    baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="1000", cols="20")
+    try:
+        baseSheet = sheet.worksheet(seasonName + " Base")
+        sheet.del_worksheet(baseSheet)
+        baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="1", cols="20")
+    except gspread.exceptions.WorksheetNotFound:
+        baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="1", cols="20")
     compList6v6, compListHL = getCompList(oldCompID, compID)
     counterList = []
     for value in counterDict.values():
@@ -77,6 +82,8 @@ def mainSheet(oldCompID, compID, divList, teamIDList, counterDict, teamDict):
         teamHL = dict(prem=0, div1=0, high=0, mid=0, low=0, open=0, none=0)
         team6s = dict(prem=0, div1=0, div2=0, mid=0, low=0, open=0, none=0)
         playerIDList = getPlayers(teamID)
+        while playerIDList == []:
+            playerIDList = getPlayers(teamID)
         teamName = getTeamName(teamID)
         for playerID in playerIDList:
             playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = getPlayerSkill(playerID, compList6v6, compListHL)
