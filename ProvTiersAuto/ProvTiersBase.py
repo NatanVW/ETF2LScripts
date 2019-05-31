@@ -1,4 +1,10 @@
 def makeTeamDict(idList, requestList):
+    if type(idList) is str:
+        idList = idList.split("\t")
+
+    if type(requestList) is str:
+        requestList = requestList.split("\t")
+
     teamDict = {}
 
     for i in range(0, len(idList)):
