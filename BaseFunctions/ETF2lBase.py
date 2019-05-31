@@ -7,8 +7,7 @@ from bs4 import BeautifulSoup
 # Get a list of all teams from given compID.
 def getTeamIDs(compID):
     firstPageUrl = "http://api.etf2l.org/competition/" + str(compID) + "/teams.json?per_page=100"
-    data = requests.get(firstPageUrl).json()
-    totalPages = data['page']['total_pages']
+    totalPages = requests.get(firstPageUrl).json()['page']['total_pages']
     idList = []
     for i in range(1, totalPages + 1):
         pageUrl = "http://api.etf2l.org/competition/" + str(compID) + "/teams/" + str(i) + ".json?per_page=100"
@@ -26,9 +25,8 @@ def getCompList(oldID, currentID):
     compListHL = []
     for i in range(oldID, currentID + 1):
         compURL = "http://api.etf2l.org/competition/" + str(i) + ".json"
-        data = requests.get(compURL).json()
         try:
-            category = data['competition']['category']
+            category = requests.get(compURL).json()['competition']['category']
         except KeyError:
             continue
         if category == "6v6 Season":
@@ -43,8 +41,7 @@ def getCompList(oldID, currentID):
 def getPlayers(teamID):
     playerIDList = []
     teamUrl = "http://api.etf2l.org/team/" + str(teamID) + ".json"
-    data = requests.get(teamUrl).json()
-    team = data['team']['players']
+    team = requests.get(teamUrl).json()['team']['players']
     if team == None:
         print("Warning: [team id = " + str(teamID) + "] ,the API didn't parse the player list for this team correctly. \n")
     else:
@@ -104,8 +101,7 @@ def dateHourToUnix(date, hour):
 # Get all players that joined after the release of the provisional tiers
 def getTransfers(teamID, provisionalsRelease):
     url = "http://api.etf2l.org/team/" + str(teamID) + "/transfers.json?since=" + str(provisionalsRelease)
-    data = requests.get(url).json()
-    transfers = data['transfers']
+    transfers = requests.get(url).json()['transfers']
 
     return transfers
 
@@ -122,22 +118,23 @@ def getTeamDiv(ID, currentMainCompID, currentTopCompID):
 
 def getTeamName(teamID):
     teamUrl = "http://api.etf2l.org/team/" + str(teamID) + ".json"
-    data = requests.get(teamUrl).json()
-    name = data['team']['name']
+    name = requests.get(teamUrl).json()['team']['name']
 
     return name
 
 
 def getSteamID64(playerID):
     url = "http://api.etf2l.org/player/" + str(playerID) + ".json"
-    data = requests.get(url).json()
-    return data['player']['steam']['id64']
+    id64 = requests.get(url).json()['player']['steam']['id64']
+
+    return id64
 
 
 def getSteamID3(playerID):
     url = "http://api.etf2l.org/player/" + str(playerID) + ".json"
-    data = requests.get(url).json()
-    return data['player']['steam']['id3']
+    id3 = requests.get(url).json()['player']['steam']['id3']
+
+    return id3
 
 
 def getETTF2Lfromid64(ID):
