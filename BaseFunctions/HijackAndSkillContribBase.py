@@ -92,6 +92,7 @@ def activeLineup(teamID, playerID, daysToCheck):
 
 # Get skill level per player
 def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compList6v6, compListHL, previousFMC):
+    resultsUrl = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?per_page=100&since=0"
     totalPages = requests.get(resultsUrl).json()['page']['total_pages']
     totalResults = []
     for i in range(1, totalPages + 1):
