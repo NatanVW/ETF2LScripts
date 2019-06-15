@@ -5,16 +5,16 @@ from BaseFunctions.HijackAndSkillContribBase import teamSkillHS, transferCheck, 
 gameType = "6s"
 
 # Set the 2 competition ID's and the ID of the competition from which on forward results should be taken into account
-currentMainCompID6s = 605
-currentTopCompID6s = 607
-oldCompID6s = 534
+currentMainCompID6s = 628
+currentTopCompID6s = 630
+oldCompID6s = 564
 
 currentMainCompIDHL = 609
 currentTopCompIDHL = 611
 oldCompIDHL = 540
 
 # Input the date and time the provisional tiers were released. Also input how far back the system should look for results of teams and players.
-date6s = "25/01/2019"
+date6s = "31/05/2019"
 hour6s = "23:59:00"
 
 dateHL = "8/03/2019"
@@ -22,7 +22,7 @@ hourHL = "18:00:00"
 daysToCheck = 7
 
 # Input the player id of players allowed as late joiners, between '' seperated by commas
-allowedPlayerIDlist6s = ['134441', '131389', '103093', '130003', '132451', '121701', '107775', '6524', '131404', '119619', '20688', '133443', '88995', '32632', '131255', '']
+allowedPlayerIDlist6s = ['47566','127504','129434','89744','131255','50139']
 allowedPlayerIDlistHL = ['96704', '105085', '122594', '126619', '93063', '118721', '82109', '125630']
 
 

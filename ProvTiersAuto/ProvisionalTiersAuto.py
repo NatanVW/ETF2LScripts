@@ -15,8 +15,8 @@ idList = ""
 requestList = ""
 
 # Set the competition ID and the ID of the competition from which on forward results should be taken into account
-currentMainCompID =
-oldCompID =
+currentMainCompID = 628
+oldCompID = 1
 
 # Enter the name of the season, will be used as the worksheet title
 seasonName = ""
@@ -67,9 +67,9 @@ def mainSheet(oldCompID, compID, divList, teamIDList, counterDict, teamDict):
     try:
         baseSheet = sheet.worksheet(seasonName + " Base")
         sheet.del_worksheet(baseSheet)
-        baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="1", cols="20")
+        baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="4", cols="20")
     except gspread.exceptions.WorksheetNotFound:
-        baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="1", cols="20")
+        baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="4", cols="20")
     compList6v6, compListHL = getCompList(oldCompID, compID)
     counterList = []
     for value in counterDict.values():
