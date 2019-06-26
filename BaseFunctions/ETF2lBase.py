@@ -158,3 +158,15 @@ def getETTF2Lfromid64(ID):
         return playerPage
 
     return playerPage[0]
+
+def getPlayerName(ID):
+    url = "http://api.etf2l.org/player/" + str(ID) + ".json"
+    playerName = requests.get(url).json()['player']['name']
+
+    return playerName
+
+def getPlayerCountry(ID):
+    url = "http://api.etf2l.org/player/" + str(ID) + ".json"
+    playerCountry = requests.get(url).json()['player']['country']
+
+    return playerCountry
