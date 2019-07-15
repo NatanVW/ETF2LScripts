@@ -99,7 +99,7 @@ def dateHourToUnix(date, hour):
 
 # Get all players that joined after the release of the provisional tiers
 def getTransfers(teamID, provisionalsRelease):
-    url = "http://api.etf2l.org/team/" + str(teamID) + "/transfers.json?since=" + str(provisionalsRelease)
+    url = "http://api.etf2l.org/team/" + str(teamID) + "/transfers.json?since=" + str(provisionalsRelease) + "&per_page=100"
     transfers = requests.get(url).json()['transfers']
 
     return transfers
