@@ -55,7 +55,7 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
         if transfers is None:
             totalJoins = 0
         else:
-            playerIDList, totalJoins = transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck)
+            playerIDList, totalJoins = transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck, provisionalsRelease)
             if len(playerIDList) == 0:
                 continue
             else:

@@ -5,7 +5,7 @@ from BaseFunctions.ETF2lBase import getTeamDiv
 
 
 # generate a list of all players that joined and left the team based off of API output.
-def transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck):
+def transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck, provisionalsRelease):
     transferList = {}
     playerIDList = []
     playerIDListJoined = []
@@ -59,7 +59,7 @@ def transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck):
                             if playerIDListJoined.count(playerID) == 0:
                                 playerIDListJoined.append(playerID)
 
-                elif transferList[playerID]['timeLeft'][0] < transferList[playerID]['timeJoined'][0]:
+                elif transferList[playerID]['timeLeft'][0] < transferList[playerID]['timeJoined'][0] and int(transferList[playerID]['timeLeft'][0][0]) < int(provisionalsRelease):
                     transferList[playerID]['timeLeft'] = []
         if transferList[playerID]['timeJoined'] == []:
             continue
