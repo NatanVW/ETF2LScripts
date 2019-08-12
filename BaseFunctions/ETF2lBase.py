@@ -5,17 +5,26 @@ from bs4 import BeautifulSoup
 
 
 # Get a list of all teams from given compID.
-def getTeamIDs(compID):
-    firstPageUrl = "http://api.etf2l.org/competition/" + str(compID) + "/teams.json?per_page=100"
+def getTeamIDs(currentMainCompID, currentTopCompID):
+    firstPageUrl = "http://api.etf2l.org/competition/" + str(currentMainCompID) + "/teams.json?per_page=100"
     totalPages = requests.get(firstPageUrl).json()['page']['total_pages']
-    idList = []
+    mainIDList = []
     for i in range(1, totalPages + 1):
-        pageUrl = "http://api.etf2l.org/competition/" + str(compID) + "/teams/" + str(i) + ".json?per_page=100"
+        pageUrl = "http://api.etf2l.org/competition/" + str(currentMainCompID) + "/teams/" + str(i) + ".json?per_page=100"
         teams = requests.get(pageUrl).json()['teams']
         for ID in teams:
-            idList.append(ID)
+            mainIDList.append(ID)
 
-    return sorted(idList)
+    firstPageUrl = "http://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams.json?per_page=100"
+    totalPages = requests.get(firstPageUrl).json()['page']['total_pages']
+    topIDList = []
+    for i in range(1, totalPages + 1):
+        pageUrl = "http://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams/" + str(i) + ".json?per_page=100"
+        teams = requests.get(pageUrl).json()['teams']
+        for ID in teams:
+            topIDList.append(ID)
+
+    return sorted(list(dict.fromkeys(mainIDList + topIDList)))
 
 
 # Search for all the seasons that happend within the old comp -> new comp range.
@@ -109,9 +118,10 @@ def getTransfers(teamID, provisionalsRelease):
 def getTeamDiv(ID, currentMainCompID, currentTopCompID):
     url = "http://api.etf2l.org/team/" + str(ID) + ".json"
     data = requests.get(url).json()
-    if data['team']['competitions'][str(currentMainCompID)]['division']['name'] is not None:
-        return data['team']['competitions'][str(currentMainCompID)]['division']['name']
-    elif data['team']['competitions'][str(currentTopCompID)]['division']['name'] is not None:
+    try:
+        if data['team']['competitions'][str(currentMainCompID)]['division']['name'] is not None:
+            return data['team']['competitions'][str(currentMainCompID)]['division']['name']
+    except KeyError:
         return data['team']['competitions'][str(currentTopCompID)]['division']['name']
 
 
