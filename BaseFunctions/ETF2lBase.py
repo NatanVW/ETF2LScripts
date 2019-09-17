@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 
 # Get a list of all teams from given compID.
-def getTeamIDs(currentMainCompID, currentTopCompID):
+def getTeamIDs(currentMainCompID, currentTopCompID = None):
     firstPageUrl = "http://api.etf2l.org/competition/" + str(currentMainCompID) + "/teams.json?per_page=100"
     totalPages = requests.get(firstPageUrl).json()['page']['total_pages']
     mainIDList = []
@@ -15,14 +15,17 @@ def getTeamIDs(currentMainCompID, currentTopCompID):
         for ID in teams:
             mainIDList.append(ID)
 
-    firstPageUrl = "http://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams.json?per_page=100"
-    totalPages = requests.get(firstPageUrl).json()['page']['total_pages']
-    topIDList = []
-    for i in range(1, totalPages + 1):
-        pageUrl = "http://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams/" + str(i) + ".json?per_page=100"
-        teams = requests.get(pageUrl).json()['teams']
-        for ID in teams:
-            topIDList.append(ID)
+    if currentTopCompID != None:
+        firstPageUrl = "http://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams.json?per_page=100"
+        totalPages = requests.get(firstPageUrl).json()['page']['total_pages']
+        topIDList = []
+        for i in range(1, totalPages + 1):
+            pageUrl = "http://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams/" + str(i) + ".json?per_page=100"
+            teams = requests.get(pageUrl).json()['teams']
+            for ID in teams:
+                topIDList.append(ID)
+    else:
+        topIDList = []
 
     return sorted(list(dict.fromkeys(mainIDList + topIDList)))
 
