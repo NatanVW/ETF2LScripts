@@ -23,7 +23,8 @@ daysToCheck = 7
 
 # Input the player id of players allowed as late joiners, between '' seperated by commas
 allowedPlayerIDlist6s = ['47566','127504','129434','89744','131255','50139']
-allowedPlayerIDlistHL = []
+allowedPlayerIDlistHL = ['89082','134456','104017','133530','132132','137051','130917','133569','132768','134656','118129','123251','91507','121473','115607','110172','130290','133863',
+                         '137241','136414','110553']
 
 
 # Don't edit anything past this point if you have no idea what you are doing
