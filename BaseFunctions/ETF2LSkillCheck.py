@@ -50,8 +50,10 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
     if compID in compListHL:
         HLMatchCount = HLMatchCount + 1
         if "Playoffs" in playOff:
-            if "High" in playOff[22:] or "Division 1" in playOff or "Division 2" in playOff:
+            if "High" in playOff[22:] or "Division 1" in playOff in playOff:
                 playerHL['prem'] += 1
+            if "Division 2" in playOff:
+                playerHL['div1'] += 1
             if "Mid" in playOff or "Division 3" in playOff or "Division 4" in playOff:
                 playerHL['high'] += 1
             if "Low" in playOff or "Division 5" in playOff:
@@ -80,8 +82,10 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
     elif compID in compList6v6:
         SMatchCount = SMatchCount + 1
         if "Playoffs" in playOff:
-            if "High" in playOff or "Division 1" in playOff or "Division 2" in playOff:
+            if "High" in playOff or "Division 1" in playOff in playOff:
                 player6s['prem'] += 1
+            if "Division 2" in playOff:
+                player6s['div1'] += 1
             if "Mid" in playOff or "Division 3" in playOff or "Division 4" in playOff:
                 player6s['div2'] += 1
             if "Low" in playOff or "Division 5" in playOff:
