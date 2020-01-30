@@ -29,7 +29,7 @@ def getTeamIDList(teamDict):
     high = getKeysByValue(teamDict, "High")
     mid = getKeysByValue(teamDict, "Mid")
     low = getKeysByValue(teamDict, "Low")
-    open = getKeysByValue(teamDict, "Fresh")
+    open = getKeysByValue(teamDict, "Open")
     none = getKeysByValue(teamDict, "")
 
     teamIDList = []
@@ -78,7 +78,7 @@ def setGameMode(gameType):
         return divList
 
     if gameType == "6s":
-        divList = ["Premiership", "High", "Mid", "Low", "Fresh"]
+        divList = ["Premiership", "Division 1", "Division 2", "Mid", "Low", "Fresh"]
         return divList
 
     else:
