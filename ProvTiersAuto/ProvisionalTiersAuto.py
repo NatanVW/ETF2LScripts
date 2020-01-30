@@ -13,7 +13,6 @@ from ProvTiersAuto.ProvTiersBase import makeTeamDict, getTeamIDList, setGameMode
 # Input the team ID list and the requested tier list. Either input a list of strings or a string where each item is seperated by a tab
 idList = ""
 requestList = ""
-
 # Set the competition ID and the ID of the competition from which on forward results should be taken into account
 currentMainCompID = 628
 oldCompID = 1
@@ -92,7 +91,7 @@ def mainSheet(oldCompID, compID, divList, teamIDList, counterDict, teamDict):
         Sseperate = 'Prem: ' + str(team6s['prem']) + ', Div1: ' + str(team6s['div1']) + ', Div2: ' + str(team6s['div2']) + ', Mid: ' + str(team6s['mid']) + ', Low: ' + str(
             team6s['low']) + ', Open: ' + str(team6s['open']) + ', None: ' + str(team6s['none'])
         STotal = team6s['prem'] * 6 + team6s['div1'] * 5 + team6s['div2'] * 4 + team6s['mid'] * 3 + team6s['low'] * 2 + team6s['open']
-        Hlseperate = 'Prem: ' + str(teamHL['prem']) + ', Div1: ' + str(team6s['div1']) + ', High: ' + str(teamHL['high']) + ', Mid: ' + str(teamHL['mid']) + ', Low: ' + str(
+        Hlseperate = 'Prem: ' + str(teamHL['prem']) + ', Div1: ' + str(teamHL['div1']) + ', High: ' + str(teamHL['high']) + ', Mid: ' + str(teamHL['mid']) + ', Low: ' + str(
             teamHL['low']) + ', Open: ' + str(teamHL['open']) + ', None:' + str(teamHL['none'])
         HlTotal = teamHL['prem'] * 6 + teamHL['div1'] * 5 + teamHL['high'] * 4 + teamHL['mid'] * 3 + teamHL['low'] * 2 + teamHL['open']
         teamLink = "http://etf2l.org/teams/" + str(teamID)
@@ -122,7 +121,7 @@ def iframeSheet(counterDict, divList):
     for value in counterDict.values():
         counterDictSum += value
 
-    frameSheet = sheet.add_worksheet(title=seasonName, rows=counterDictSum / 2 + 9, cols="2")
+    frameSheet = sheet.add_worksheet(title=seasonName, rows=math.ceil(counterDictSum / 2 + 9), cols="2")
     frameSheet.update_cell(1, 1, divList[0])
     j = 2
     k = j
