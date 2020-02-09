@@ -6,17 +6,13 @@ import requests
 
 def getPlayerHistory(ID):
     baseUrl = "http://rgl.gg/Public/API/v1/PlayerHistory.aspx?s=" + str(ID)
-    response = requests.get(baseUrl)
-    tree = lxml.html.fromstring(response.content)
-    playerInfo = tree.xpath('//span[@id]/text()')
-    correctPart = json.loads(str(playerInfo[0]))
     try:
-        data = correctPart[0]
+        data = json.loads(BeautifulSoup(requests.get(baseUrl).content, "lxml").find("span",{"id":"lblOutput"}).text)[0]
     except IndexError:
         playerHistory = 0
         name = 0
         return playerHistory, name
-    playerHistory = data['PlayerHistory']
+    playerHistory = data['PlayerHistory'][0]
     name = data['CurrentAlias']
     return playerHistory, name
 
