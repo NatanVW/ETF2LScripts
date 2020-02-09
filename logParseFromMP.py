@@ -1,9 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import sys
 
 from BaseFunctions.ETF2lBase import getSteamID64
 
+
+def urlInput():
+    url = input("Input match url:")
+    return re.findall("\d{4,}",url)
 
 def getPlayersFromStatus(matchID):
     url = "http://etf2l.org/matches/" + str(matchID)
@@ -43,10 +48,14 @@ def getMatchTime(playerID, matchID):
     url = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?since=0&per_page=100"
     results = requests.get(url).json()['results']
     for match in results:
-        if match['id'] == matchID:
+        if str(match['id']) == matchID:
             matchStart = match['time']
 
-    matchEnd = (4 * 60 * 60) + matchStart
+    try:
+        matchEnd = (24 * 60 * 60) + matchStart
+    except UnboundLocalError:
+        sys.exit("Error: Match is probably not verified")
+
     return matchStart, matchEnd
 
 def getPlayerLogs(playerID64, matchStart, matchEnd):
@@ -60,6 +69,7 @@ def getPlayerLogs(playerID64, matchStart, matchEnd):
 
 def getLogsForMatch(matchID):
     teamOne, teamTwo = getPlayersFromStatus(matchID)
+    print(teamOne, teamTwo)
     playerOneID64 = getSteamID64(teamOne[0])
     playerTwoID64 = getSteamID64(teamTwo[0])
     matchStart, matchEnd = getMatchTime(teamOne[0],matchID)
@@ -74,4 +84,5 @@ def getLogsForMatch(matchID):
     for log in matchingLogs:
         print("http://logs.tf/" + str(log))
 
-getLogsForMatch(77516)
+matchID = urlInput()
+getLogsForMatch(matchID[0])
