@@ -84,9 +84,9 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
         if "Playoffs" in playOff:
             if "High" in playOff or "Division 1" in playOff in playOff:
                 player6s['prem'] += 1
-            if "Division 2" in playOff:
+            if "Division 2" or "Division 3" in playOff in playOff:
                 player6s['div1'] += 1
-            if "Mid" in playOff or "Division 3" in playOff or "Division 4" in playOff:
+            if "Mid" in playOff  or "Division 4" in playOff:
                 player6s['div2'] += 1
             if "Low" in playOff or "Division 5" in playOff:
                 player6s['mid'] += 1
@@ -102,9 +102,9 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
                 player6s['prem'] += 1
             elif "Division 1" in tierName:
                 player6s['div1'] += 1
-            elif tierName == "High" or "Division 2" in tierName:
+            elif tierName == "High" or "Division 2" in tierName or "Division 3" in tierName:
                 player6s['div2'] += 1
-            elif tierName == "Mid" or "Division 3" in tierName or "Division 4" in tierName:
+            elif tierName == "Mid"  or "Division 4" in tierName:
                 player6s['mid'] += 1
             elif tierName == "Low" or "Division 5" in tierName:
                 player6s['low'] += 1
