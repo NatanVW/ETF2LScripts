@@ -69,7 +69,6 @@ def getPlayerLogs(playerID64, matchStart, matchEnd):
 
 def getLogsForMatch(matchID):
     teamOne, teamTwo = getPlayersFromStatus(matchID)
-    print(teamOne, teamTwo)
     playerOneID64 = getSteamID64(teamOne[0])
     playerTwoID64 = getSteamID64(teamTwo[0])
     matchStart, matchEnd = getMatchTime(teamOne[0],matchID)
