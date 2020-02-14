@@ -77,7 +77,7 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
         Hlseperate = 'Prem: ' + str(teamHL['prem']) + ', Div1: ' + str(team6s['div1']) + ', High: ' + str(teamHL['high']) + ', Mid: ' + str(teamHL['mid']) + ', Low: ' + str(
             teamHL['low']) + ', Open: ' + str(teamHL['open']) + ', None:' + str(teamHL['none'])
         if ((activePlayer >= activeJoinLimit or (skillContribTotal6s >= skillContribLimit)) and gameType == "6s") or (
-                (activePlayer >= activeJoinLimit or (skillContribTotalHL >= skillContribLimit)) and gameType == "HL"):
+             (activePlayer >= activeJoinLimit or (skillContribTotalHL >= skillContribLimit)) and gameType == "HL") or (teamDiv == 'Open' and skillContribTotalHL >= skillContribLimit and gameType == "6s"):
             print("[team id = " + str(teamID) + "], this team is a " + teamDiv + " team")
             print("Number of joins since provisionals released: " + str(totalJoins))
             print("PlayerID of the joiners:")
