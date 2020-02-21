@@ -33,17 +33,36 @@ def getTeamIDs(currentMainCompID, currentTopCompID = None):
 # Search for all the seasons that happend within the old comp -> new comp range.
 def getCompList(oldID, currentID):
     compList6v6 = []
-    compListHL = []
-    for i in range(oldID, currentID + 1):
-        compURL = "http://api.etf2l.org/competition/" + str(i) + ".json"
+    firstPageUrl6v6 = "http://api.etf2l.org/competition/list.json?per_page=100&category=6v6%20Season&archived=1"
+    totalPages = requests.get(firstPageUrl6v6).json()['page']['total_pages']
+    for i in range(1, totalPages + 1):
+        pageUrl = "http://api.etf2l.org/competition/list/" + str(i) + ".json?per_page=100&category=6v6%20Season&archived=1"
+        data = requests.get(pageUrl).json()['competitions']
+        for key in data.keys():
+            compList6v6.append(key)
+    compList6v6 =sorted(compList6v6, key=int)
+    while True:
         try:
-            category = requests.get(compURL).json()['competition']['category']
-        except KeyError:
-            continue
-        if category == "6v6 Season":
-            compList6v6.append(str(i))
-        elif category == "Highlander Season":
-            compListHL.append(str(i))
+            del compList6v6[:compList6v6.index(str(oldID))]
+            break
+        except ValueError:
+            oldID += 1
+
+    compListHL = []
+    firstPageUrlHL = "http://api.etf2l.org/competition/list.json?per_page=100&category=Highlander%20Season&archived=1"
+    totalPages = requests.get(firstPageUrlHL).json()['page']['total_pages']
+    for i in range(1, totalPages + 1):
+        pageUrl = "http://api.etf2l.org/competition/list/" + str(i) + ".json?per_page=100&category=Highlander%20Season&archived=1"
+        data = requests.get(pageUrl).json()['competitions']
+        for key in data.keys():
+            compListHL.append(key)
+    compListHL = sorted(compListHL, key=int)
+    while True:
+        try:
+            del compListHL[:compListHL.index(str(oldID))]
+            break
+        except ValueError:
+            oldID += 1
 
     return compList6v6, compListHL
 
