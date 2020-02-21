@@ -36,10 +36,8 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
                                                                                                                                       allowedPlayerIDlist6s, allowedPlayerIDlistHL)
     provisionalsRelease = dateHourToUnix(date, hour)
     compList6v6, compListHL = getCompList(oldCompID, currentTopCompID)
-    #fullCompList6v6, fullCompListHL = getCompList(1, currentMainCompID)
-    fullCompList6v6, fullCompListHL = [],[]
-    #teamIDList = getTeamIDs(currentMainCompID, currentTopCompID)
-    teamIDList = ['31451']
+    fullCompList6v6, fullCompListHL = getCompList(1, currentMainCompID)
+    teamIDList = getTeamIDs(currentMainCompID, currentTopCompID)
     previousFMC = 0
 
     for teamID in teamIDList:

@@ -1,7 +1,3 @@
-import sys
-
-sys.path.append('\Etf2lScripts\BaseFunctions')
-
 import gspread
 import math
 from oauth2client.service_account import ServiceAccountCredentials
