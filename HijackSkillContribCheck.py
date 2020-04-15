@@ -57,6 +57,7 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
         else:
             playerIDList, totalJoins = transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck, provisionalsRelease)
             if len(playerIDList) == 0:
+                teamDiv = ""
                 continue
             else:
                 teamDiv = getTeamDiv(teamID, currentMainCompID, currentTopCompID)
