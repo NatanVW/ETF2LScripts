@@ -1,17 +1,22 @@
-from BaseFunctions.ETF2lBase import getCompList, getTeamIDs, dateHourToUnix, getTransfers, setGameMode, getTeamDiv
+from BaseFunctions.ETF2lBase import getCompList, getTeamIDs, dateHourToUnix, getTransfers, setGameMode, getTeamDiv, getSteamID64
 from BaseFunctions.HijackAndSkillContribBase import teamSkillHS, transferCheck, getPlayerSkillHS, activeLineup
+from BaseFunctions.RGLSkillCheck import getPlayerHistory, getSkillLevel, getDivisionPlayed, RGLtoETF2L
 
 # Input the gamemode that needs to be checked. HL for highlander, 6s for 6v6
 gameType = "6s"
 
 # Set the 2 competition ID's and the ID of the competition from which on forward results should be taken into account
-currentMainCompID6s = 668
-currentTopCompID6s = 670
-oldCompID6s = 605
+currentMainCompID6s = 674
+currentTopCompID6s = 675
+oldCompID6s = 662
 
 currentMainCompIDHL = 635
 currentTopCompIDHL = 642
 oldCompIDHL = 571
+
+#RGL Competition Setup: current HL season number and current 6s season number
+currentHL = 7
+current6s = 4
 
 # Input the date and time the provisional tiers were released. Also input how far back the system should look for results of teams and players.
 date6s = "24/01/2020"
@@ -29,7 +34,7 @@ allowedPlayerIDlistHL = []
 # Don't edit anything past this point if you have no idea what you are doing
 
 def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s, hour6s, dateHL, hourHL, daysToCheck, gameType,
-         allowedPlayerIDlist6s, allowedPlayerIDlistHL):
+         allowedPlayerIDlist6s, allowedPlayerIDlistHL, currentHL, current6s):
     activeJoinLimit, skillContribLimit, currentMainCompID, currentTopCompID, oldCompID, date, hour, allowedPlayerIDlist = setGameMode(gameType, currentMainCompID6s, currentTopCompID6s,
                                                                                                                                       oldCompID6s, currentMainCompIDHL, currentTopCompIDHL,
                                                                                                                                       oldCompIDHL, date6s, hour6s, dateHL, hourHL,
@@ -70,6 +75,13 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
                     team6s, teamHl, skillContribTotal6s, skillContribTotalHL, waterfall = teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL,
                                                                                                       HLMatchCount, SMatchCount, playerID, teamID, activePlayerIDlist, waterfall,
                                                                                                       currentMainCompID, currentTopCompID)
+                    #RGL Skill Check Section
+                    steamID64 = getSteamID64(playerID)
+                    name, playerHistory = getPlayerHistory(steamID64)
+                    if playerHistory != 0:
+                        RGLplayerHL, RGLplayer6s = getDivisionPlayed(playerHistory, currentHL, current6s)
+                        skillLevelHL, skillLevel6s = getSkillLevel(RGLplayerHL, RGLplayer6s)
+                        teamHL, team6s = RGLtoETF2L(skillLevelHL, skillLevel6s, teamHL, team6s)
 
         # Log output to the cosole for each team
         Sseperate = 'Prem: ' + str(team6s['prem']) + ', Div1: ' + str(team6s['div1']) + ', Div2: ' + str(team6s['div2']) + ', Mid: ' + str(team6s['mid']) + ', Low: ' + str(
@@ -104,4 +116,4 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
 
 
 main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompIDHL, currentTopCompIDHL, oldCompIDHL, date6s,
-     hour6s, dateHL, hourHL, daysToCheck, gameType, allowedPlayerIDlist6s, allowedPlayerIDlistHL)
+     hour6s, dateHL, hourHL, daysToCheck, gameType, allowedPlayerIDlist6s, allowedPlayerIDlistHL, currentHL, current6s)
