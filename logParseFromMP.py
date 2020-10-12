@@ -11,7 +11,7 @@ def urlInput():
     return re.findall("\d{4,}",url)
 
 def getPlayersFromStatus(matchID):
-    url = "http://etf2l.org/matches/" + str(matchID)
+    url = "https://etf2l.org/matches/" + str(matchID)
     searchPage = requests.get(url).content
     html = BeautifulSoup(searchPage, "lxml")
     table = html.find("table",{"class":"fix match-players"})
@@ -45,7 +45,7 @@ def getPlayersFromStatus(matchID):
     return teamOne, teamTwo
 
 def getMatchTime(playerID, matchID):
-    url = "http://api.etf2l.org/player/" + str(playerID) + "/results.json?since=0&per_page=100"
+    url = "https://api.etf2l.org/player/" + str(playerID) + "/results.json?since=0&per_page=100"
     results = requests.get(url).json()['results']
     for match in results:
         if str(match['id']) == matchID:
@@ -59,7 +59,7 @@ def getMatchTime(playerID, matchID):
     return matchStart, matchEnd
 
 def getPlayerLogs(playerID64, matchStart, matchEnd):
-    url = "http://logs.tf/api/v1/log?player=" + str(playerID64)
+    url = "https://logs.tf/api/v1/log?player=" + str(playerID64)
     logs = requests.get(url).json()['logs']
     logList = []
     for log in logs:
@@ -81,7 +81,7 @@ def getLogsForMatch(matchID):
                 matchingLogs.append(playerOneLogs[i])
 
     for log in matchingLogs:
-        print("http://logs.tf/" + str(log))
+        print("https://logs.tf/" + str(log))
 
 matchID = urlInput()
 getLogsForMatch(matchID[0])

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 # UGC functions
 def getPlayerHonors(id64):
-    url = "https://www.ugcleague.com/players_page.cfm?player_id=" + str(id64)
+    url = "httpss://www.ugcleague.com/players_page.cfm?player_id=" + str(id64)
     playerPage = requests.get(url).content
     html = BeautifulSoup(playerPage, "lxml")
     playerRows = []

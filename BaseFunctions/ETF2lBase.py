@@ -6,21 +6,21 @@ from bs4 import BeautifulSoup
 
 # Get a list of all teams from given compID.
 def getTeamIDs(currentMainCompID, currentTopCompID = None):
-    firstPageUrl = "http://api.etf2l.org/competition/" + str(currentMainCompID) + "/teams.json?per_page=100"
+    firstPageUrl = "https://api.etf2l.org/competition/" + str(currentMainCompID) + "/teams.json?per_page=100"
     totalPages = requests.get(firstPageUrl).json()['page']['total_pages']
     mainIDList = []
     for i in range(1, totalPages + 1):
-        pageUrl = "http://api.etf2l.org/competition/" + str(currentMainCompID) + "/teams/" + str(i) + ".json?per_page=100"
+        pageUrl = "https://api.etf2l.org/competition/" + str(currentMainCompID) + "/teams/" + str(i) + ".json?per_page=100"
         teams = requests.get(pageUrl).json()['teams']
         for ID in teams:
             mainIDList.append(ID)
 
     if currentTopCompID != None:
-        firstPageUrl = "http://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams.json?per_page=100"
+        firstPageUrl = "https://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams.json?per_page=100"
         totalPages = requests.get(firstPageUrl).json()['page']['total_pages']
         topIDList = []
         for i in range(1, totalPages + 1):
-            pageUrl = "http://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams/" + str(i) + ".json?per_page=100"
+            pageUrl = "https://api.etf2l.org/competition/" + str(currentTopCompID) + "/teams/" + str(i) + ".json?per_page=100"
             teams = requests.get(pageUrl).json()['teams']
             for ID in teams:
                 topIDList.append(ID)
@@ -33,10 +33,10 @@ def getTeamIDs(currentMainCompID, currentTopCompID = None):
 # Search for all the seasons that happend within the old comp -> new comp range.
 def getCompList(oldID, currentID):
     compList6v6 = []
-    firstPageUrl6v6 = "http://api.etf2l.org/competition/list.json?per_page=100&category=6v6%20Season&archived=1"
+    firstPageUrl6v6 = "https://api.etf2l.org/competition/list.json?per_page=100&category=6v6%20Season&archived=1"
     totalPages = requests.get(firstPageUrl6v6).json()['page']['total_pages']
     for i in range(1, totalPages + 1):
-        pageUrl = "http://api.etf2l.org/competition/list/" + str(i) + ".json?per_page=100&category=6v6%20Season&archived=1"
+        pageUrl = "https://api.etf2l.org/competition/list/" + str(i) + ".json?per_page=100&category=6v6%20Season&archived=1"
         data = requests.get(pageUrl).json()['competitions']
         for key in data.keys():
             compList6v6.append(key)
@@ -49,10 +49,10 @@ def getCompList(oldID, currentID):
             oldID += 1
 
     compListHL = []
-    firstPageUrlHL = "http://api.etf2l.org/competition/list.json?per_page=100&category=Highlander%20Season&archived=1"
+    firstPageUrlHL = "https://api.etf2l.org/competition/list.json?per_page=100&category=Highlander%20Season&archived=1"
     totalPages = requests.get(firstPageUrlHL).json()['page']['total_pages']
     for i in range(1, totalPages + 1):
-        pageUrl = "http://api.etf2l.org/competition/list/" + str(i) + ".json?per_page=100&category=Highlander%20Season&archived=1"
+        pageUrl = "https://api.etf2l.org/competition/list/" + str(i) + ".json?per_page=100&category=Highlander%20Season&archived=1"
         data = requests.get(pageUrl).json()['competitions']
         for key in data.keys():
             compListHL.append(key)
@@ -70,7 +70,7 @@ def getCompList(oldID, currentID):
 # Get all players ID's on a team
 def getPlayers(teamID):
     playerIDList = []
-    teamUrl = "http://api.etf2l.org/team/" + str(teamID) + ".json"
+    teamUrl = "https://api.etf2l.org/team/" + str(teamID) + ".json"
     team = requests.get(teamUrl).json()['team']['players']
     if team == None:
         print("Warning: [team id = " + str(teamID) + "] ,the API didn't parse the player list for this team correctly. \n")
@@ -130,7 +130,7 @@ def dateHourToUnix(date, hour):
 
 # Get all players that joined after the release of the provisional tiers
 def getTransfers(teamID, provisionalsRelease):
-    url = "http://api.etf2l.org/team/" + str(teamID) + "/transfers.json?since=" + str(provisionalsRelease) + "&per_page=100"
+    url = "https://api.etf2l.org/team/" + str(teamID) + "/transfers.json?since=" + str(provisionalsRelease) + "&per_page=100"
     transfers = requests.get(url).json()['transfers']
 
     return transfers
@@ -138,7 +138,7 @@ def getTransfers(teamID, provisionalsRelease):
 
 # Check the division the team is in
 def getTeamDiv(ID, currentMainCompID, currentTopCompID):
-    url = "http://api.etf2l.org/team/" + str(ID) + ".json"
+    url = "https://api.etf2l.org/team/" + str(ID) + ".json"
     data = requests.get(url).json()
     try:
         if data['team']['competitions'][str(currentMainCompID)]['division']['name'] is not None:
@@ -148,28 +148,28 @@ def getTeamDiv(ID, currentMainCompID, currentTopCompID):
 
 
 def getTeamName(teamID):
-    teamUrl = "http://api.etf2l.org/team/" + str(teamID) + ".json"
+    teamUrl = "https://api.etf2l.org/team/" + str(teamID) + ".json"
     name = requests.get(teamUrl).json()['team']['name']
 
     return name
 
 
 def getSteamID64(playerID):
-    url = "http://api.etf2l.org/player/" + str(playerID) + ".json"
+    url = "https://api.etf2l.org/player/" + str(playerID) + ".json"
     id64 = requests.get(url).json()['player']['steam']['id64']
 
     return id64
 
 
 def getSteamID3(playerID):
-    url = "http://api.etf2l.org/player/" + str(playerID) + ".json"
+    url = "https://api.etf2l.org/player/" + str(playerID) + ".json"
     id3 = requests.get(url).json()['player']['steam']['id3']
 
     return id3
 
 
 def getETTF2Lfromid64(ID):
-    url = "http://etf2l.org/search/" + str(ID)
+    url = "https://etf2l.org/search/" + str(ID)
     searchPage = requests.get(url).content
     html = BeautifulSoup(searchPage, "lxml")
     searchResults = []
@@ -192,13 +192,13 @@ def getETTF2Lfromid64(ID):
     return playerPage[0]
 
 def getPlayerName(ID):
-    url = "http://api.etf2l.org/player/" + str(ID) + ".json"
+    url = "https://api.etf2l.org/player/" + str(ID) + ".json"
     playerName = requests.get(url).json()['player']['name']
 
     return playerName
 
 def getPlayerCountry(ID):
-    url = "http://api.etf2l.org/player/" + str(ID) + ".json"
+    url = "https://api.etf2l.org/player/" + str(ID) + ".json"
     playerCountry = requests.get(url).json()['player']['country']
 
     return playerCountry
