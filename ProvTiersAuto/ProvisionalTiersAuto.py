@@ -90,7 +90,7 @@ def mainSheet(oldCompID, compID, divList, teamIDList, counterDict, teamDict):
         Hlseperate = 'Prem: ' + str(teamHL['prem']) + ', Div1: ' + str(teamHL['div1']) + ', High: ' + str(teamHL['high']) + ', Mid: ' + str(teamHL['mid']) + ', Low: ' + str(
             teamHL['low']) + ', Open: ' + str(teamHL['open']) + ', None:' + str(teamHL['none'])
         HlTotal = teamHL['prem'] * 6 + teamHL['div1'] * 5 + teamHL['high'] * 4 + teamHL['mid'] * 3 + teamHL['low'] * 2 + teamHL['open']
-        teamLink = "http://etf2l.org/teams/" + str(teamID)
+        teamLink = "https://etf2l.org/teams/" + str(teamID)
         teamLinkName = '=HYPERLINK("' + teamLink + '";"' + teamName + '")'
 
         for k in range(0, len(counterList)):
