@@ -1,58 +1,67 @@
 import json
-
-import lxml.html
 import requests
 
 
 def getPlayerHistory(ID):
-    baseUrl = "http://rgl.gg/Public/API/v1/PlayerHistory.aspx?s=" + str(ID)
-    try:
-        data = json.loads(BeautifulSoup(requests.get(baseUrl).content, "lxml").find("span",{"id":"lblOutput"}).text)[0]
-    except IndexError:
-        playerHistory = 0
-        name = 0
-        return playerHistory, name
-    playerHistory = data['PlayerHistory'][0]
-    name = data['CurrentAlias']
-    return playerHistory, name
+    baseUrl = "https://payload.tf/api/rgl/" + str(ID)
+    data = requests.get(baseUrl).json()
+    if data['success']==True:
+        return data['name'], data['experience']
+    else:
+        return 0,0
 
+def getDivisionPlayed(playerHistory,currentHL,current6s):
+    playerHL = dict(invite=0, advanced=0, main=0, intermediate=0, amateur=0, newcomer=0)
+    player6s = dict(invite=0, advanced=0, main=0, intermediate=0, amateur=0, newcomer=0)
+    for i in range(0,len(playerHistory)):
+        if playerHistory[i]['category']=="highlander" and (playerHistory[i]['season']=="hl season " + str(currentHL) or playerHistory[i]['season']=="hl season " + str(currentHL-1) or playerHistory[i]['season']=="hl season " + str(currentHL-2)):
+            playerHL[playerHistory[i]['div']]+=1
+        if playerHistory[i]['category']=="trad. sixes" and (playerHistory[i]['season']=="sixes s" + str(current6s) or playerHistory[i]['season']=="sixes s" + str(current6s-1) or playerHistory[i]['season']=="sixes s" + str(current6s-2)):
+            player6s[playerHistory[i]['div']]+=1
 
-def getDivisionPlayed(playerHistory):
-    seasonsPlayed = []
-    divisionsPlayed = []
-    matchCount = []
-    for i in range(0, len(playerHistory)):
-        played = playerHistory[i]
-        if "HL" in played['RegionURL'] or "MM" in played['RegionURL']:
-            seasonsPlayed.append(played['SeasonName'])
-            divisionsPlayed.append(played['DivisionName'])
-            matchCount.append(played['Wins'] + played['Loses'])
-    return seasonsPlayed, divisionsPlayed, matchCount
+    return playerHL, player6s
 
+def getSkillLevel(playerHL,player6s):
+    skillLevel6s = None
+    skillLevelHL = None
+    for key, value in player6s.items():
+        if value != 0:
+            skillLevel6s = key
+    for key, value in playerHL.items():
+        if value != 0:
+            skillLevelHL = key
 
-def higherSkillCheckRGL(seasonsPlayed, divisionsPlayed, matchCount, higherSkilledPlayerIDListRGL, playerID, id64List, id64, RGLNameList, name):
-    for i in range(0, len(seasonsPlayed)):
-        if "Season" in seasonsPlayed[i]:
-            if divisionsPlayed[i] != "RGL-Open":
-                higherSkilledPlayerIDListRGL.append(playerID)
-                RGLNameList.append(name)
-                id64List.append(id64)
-                return higherSkilledPlayerIDListRGL, id64List, RGLNameList
-            elif divisionsPlayed[i] == "RGL-Open" and matchCount[i] >= 10:
-                higherSkilledPlayerIDListRGL.append(playerID)
-                RGLNameList.append(name)
-                id64List.append(id64)
-                return higherSkilledPlayerIDListRGL, id64List, RGLNameList
-        if "MM" in seasonsPlayed[i]:
-            if divisionsPlayed[i] != "Open":
-                higherSkilledPlayerIDListRGL.append(playerID)
-                RGLNameList.append(name)
-                id64List.append(id64)
-                return higherSkilledPlayerIDListRGL, id64List, RGLNameList
-            elif divisionsPlayed[i] == "Open" and matchCount[i] >= 10:
-                higherSkilledPlayerIDListRGL.append(playerID)
-                RGLNameList.append(name)
-                id64List.append(id64)
-                return higherSkilledPlayerIDListRGL, id64List, RGLNameList
+    return skillLevelHL, skillLevel6s
 
-    return higherSkilledPlayerIDListRGL, id64List, RGLNameList
+def RGLtoETF2L(skillLevelHL, skillLevel6s, teamHL, team6s):
+    if skillLevelHL == "invite":
+        teamHL['prem']+=1
+    elif skillLevelHL == "advanced":
+        teamHL['div1']+=1
+    elif skillLevelHL == "main":
+        teamHL['div2']+=1
+    elif skillLevelHL == "intermediate":
+        teamHL['mid']+=1
+    elif skillLevelHL == "amateur":
+        teamHL['low']+=1
+    elif skillLevelHL == "newcomer":
+        teamHL['open']+=1
+    elif skillLevelHL == None:
+        teamHL['none']+=1
+
+    if skillLevel6s == "invite":
+        team6s['prem']+=1
+    elif skillLevel6s == "advanced":
+        team6s['div1']+=1
+    elif skillLevel6s == "main":
+        team6s['div2']+=1
+    elif skillLevel6s == "intermediate":
+        team6s['mid']+=1
+    elif skillLevel6s == "amateur":
+        team6s['low']+=1
+    elif skillLevel6s == "newcomer":
+        team6s['open']+=1
+    elif skillLevel6s == None:
+        team6s['none']+=1
+
+    return teamHL, team6s
