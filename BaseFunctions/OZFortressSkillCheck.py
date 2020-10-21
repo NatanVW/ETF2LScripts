@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 
 def getPlayerPage(ID):
-    url = "httpss://warzone.ozfortress.com/users?q=" + str(ID)
+    url = "https://warzone.ozfortress.com/users?q=" + str(ID)
     searchPage = requests.get(url).content
     html = BeautifulSoup(searchPage, "lxml")
     results = html.find("div", {"class": "user-details"})
@@ -12,7 +12,7 @@ def getPlayerPage(ID):
         return playerPage
     for a in results.find_all("a", href=True):
         playerPage.append(a['href'])
-    playerPageUrl = "httpss://warzone.ozfortress.com" + playerPage[0]
+    playerPageUrl = "https://warzone.ozfortress.com" + playerPage[0]
 
     return playerPageUrl
 
