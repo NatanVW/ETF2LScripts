@@ -2,15 +2,16 @@ from BaseFunctions.ETF2LSkillCheck import getPlayerSkill, teamSkill
 from BaseFunctions.ETF2lBase import getCompList, getPlayers, getTeamName, getTeamIDs
 
 # Set the competition ID and the ID of the competition from which on forward results should be taken into account
-currentMainCompID = 670
-oldCompID = 549
+currentMainCompID = 674
+oldCompID = 605
 
 
 # Don't edit anything past this point if you have no idea what you are doing
 
 def main(oldCompId, compID):
     compList6v6, compListHL = getCompList(oldCompID, compID)
-    teamIDList = getTeamIDs(compID)
+    #teamIDList = getTeamIDs(compID)
+    teamIDList = ['32784']
     for teamID in teamIDList:
         teamHL = dict(prem=0, div1=0, high=0, mid=0, low=0, open=0, none=0)
         team6s = dict(prem=0, div1=0, div2=0, mid=0, low=0, open=0, none=0)

@@ -14,12 +14,21 @@ def getDivisionPlayed(playerHistory,currentHL,current6s):
     playerHL = dict(invite=0, advanced=0, main=0, intermediate=0, amateur=0, newcomer=0)
     player6s = dict(invite=0, advanced=0, main=0, intermediate=0, amateur=0, newcomer=0)
     for i in range(0,len(playerHistory)):
-        if playerHistory[i]['category']=="highlander" and (playerHistory[i]['season']=="hl season " + str(currentHL) or playerHistory[i]['season']=="hl season " + str(currentHL-1) or playerHistory[i]['season']=="hl season " + str(currentHL-2)):
-            playerHL[playerHistory[i]['div']]+=1
-        if playerHistory[i]['category']=="trad. sixes" and (playerHistory[i]['season']=="sixes s" + str(current6s) or playerHistory[i]['season']=="sixes s" + str(current6s-1) or playerHistory[i]['season']=="sixes s" + str(current6s-2)):
-            player6s[playerHistory[i]['div']]+=1
-
-    return playerHL, player6s
+        if playerHistory[i]['format'] == "na highlander" and playerHistory[i]['div'] != "dead teams" and (playerHistory[i]['season']=="hl season " + str(currentHL) or playerHistory[i]['season']=="hl season " + str(currentHL-1) or playerHistory[i]['season']=="hl season " + str(currentHL-2)):
+            try:
+                playerHL[playerHistory[i]['div']]+=1
+            except KeyError:
+                if playerHistory[i]['div'] == 'invite - powered by mannco.store':
+                    playerHL['invite']+=1
+        if playerHistory[i]['format'] == "na traditional sixes" and playerHistory[i]['div'] != "dead teams" and (playerHistory[i]['season']=="sixes s" + str(current6s) or playerHistory[i]['season']=="sixes s" + str(current6s-1) or playerHistory[i]['season']=="sixes s" + str(current6s-2)):
+            try:
+                player6s[playerHistory[i]['div']] += 1
+            except KeyError:
+                if playerHistory[i]['div'] == 'invite - powered by mannco.store':
+                    player6s['invite'] += 1
+        else:
+            break
+        return playerHL, player6s
 
 def getSkillLevel(playerHL,player6s):
     skillLevel6s = None
