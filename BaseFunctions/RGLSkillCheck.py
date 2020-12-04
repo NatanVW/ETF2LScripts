@@ -5,7 +5,8 @@ import requests
 def getPlayerHistory(ID):
     baseUrl = "https://payload.tf/api/rgl/" + str(ID)
     data = requests.get(baseUrl).json()
-    if data['success']==True:
+    if "experience" in data:
+        # If there is experience inside of the response we assume the player has history
         return data['name'], data['experience']
     else:
         return 0,0

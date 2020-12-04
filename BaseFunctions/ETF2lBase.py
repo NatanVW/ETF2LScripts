@@ -33,6 +33,10 @@ def getTeamIDs(currentMainCompID, currentTopCompID = None):
 # Search for all the seasons that happend within the old comp -> new comp range.
 def getCompList(oldID, currentID):
     compList6v6 = []
+    cleaned6sCompList = []
+    compListHL = []
+    cleanedHLCompList = []
+
     firstPageUrl6v6 = "https://api.etf2l.org/competition/list.json?per_page=100&category=6v6%20Season&archived=1"
     totalPages = requests.get(firstPageUrl6v6).json()['page']['total_pages']
     for i in range(1, totalPages + 1):
@@ -41,14 +45,11 @@ def getCompList(oldID, currentID):
         for key in data.keys():
             compList6v6.append(key)
     compList6v6 =sorted(compList6v6, key=int)
-    while True:
-        try:
-            del compList6v6[:compList6v6.index(str(oldID))]
-            break
-        except ValueError:
-            oldID += 1
 
-    compListHL = []
+    for compId6s in compList6v6:
+        if int(compId6s) >= oldID:
+            cleaned6sCompList.append(compId6s)
+
     firstPageUrlHL = "https://api.etf2l.org/competition/list.json?per_page=100&category=Highlander%20Season&archived=1"
     totalPages = requests.get(firstPageUrlHL).json()['page']['total_pages']
     for i in range(1, totalPages + 1):
@@ -57,14 +58,12 @@ def getCompList(oldID, currentID):
         for key in data.keys():
             compListHL.append(key)
     compListHL = sorted(compListHL, key=int)
-    while True:
-        try:
-            del compListHL[:compListHL.index(str(oldID))]
-            break
-        except ValueError:
-            oldID += 1
 
-    return compList6v6, compListHL
+    for compIdHl in compListHL:
+        if int(compIdHl) >= oldID:
+            cleanedHLCompList.append(compIdHl)
+
+    return cleaned6sCompList, cleanedHLCompList
 
 
 # Get all players ID's on a team
