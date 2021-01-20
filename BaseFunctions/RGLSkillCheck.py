@@ -5,10 +5,11 @@ import requests
 def getPlayerHistory(ID):
     baseUrl = "https://payload.tf/api/rgl/" + str(ID)
     data = requests.get(baseUrl).json()
-    if data['success']==True:
+    try:
+        if data['message']=="Player has no history in RGL" or data['message']== "Player does not exist in RGL":
+            return 0, 0
+    except KeyError:
         return data['name'], data['experience']
-    else:
-        return 0,0
 
 def getDivisionPlayed(playerHistory,currentHL,current6s):
     playerHL = dict(invite=0, advanced=0, main=0, intermediate=0, amateur=0, newcomer=0)

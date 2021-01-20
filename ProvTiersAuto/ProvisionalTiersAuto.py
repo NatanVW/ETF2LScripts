@@ -7,20 +7,20 @@ from BaseFunctions.ETF2lBase import getCompList, getPlayers, getTeamName
 from ProvTiersAuto.ProvTiersBase import makeTeamDict, getTeamIDList, setGameMode
 
 # Input the team ID list and the requested tier list. Either input a list of strings or a string where each item is seperated by a tab
-idList = ""
-requestList = ""
+idList = "19335	32765	32743	32270	32113	32861	32302	25693	32759	32999	29935	29912	33017	32475	32844	32871	32786	32905	32804	32868	32957	30263	33317	32883	32234	32388	18974	32859	33014	32131	33015	27530	32564	19058	26591	32342	32426	32781	32345	32106	17798	32494	32034	24746	33010	33325	30320	33025	32303	32366	32334	28121	33037	33332	32974	33314	32172	33316	15388	33337	32823	33313	31702	31253	32422	32235	31477	27488	32137	32258	29616	33338	13849	25734	33031	32950	32846	21344	31672	32887	33368	32926	32577	32373	33003	30548	33355	32897"
+requestList = "Premiership	High	Low	Low	High	Low	Mid	Premiership	Open	Open	Open	Premiership	Open	Low	Open	Open	Open	Open	Low	Open	Open	Premiership	Low	High	Mid	Low	Premiership	Open	Open	Open	Open	High	Open	Mid	Mid	High	Low	Low	Open	Mid	High	Open	Low	Premiership	Open	Low	High	High	High	Open	Open	High	High	Open	Low	Open	Premiership	Open	Low	Open	Low	Open	Open	High	Mid	High	Low	Premiership	Low	High	High	Open	Low	Premiership	Low	Low	Open	High	Low	Mid	Open	Mid	Mid	Open	Open	Low	High	High"
 # Set the competition ID and the ID of the competition from which on forward results should be taken into account
-currentMainCompID = 628
-oldCompID = 1
+currentMainCompID = 686
+oldCompID = 611
 
 # Enter the name of the season, will be used as the worksheet title
-seasonName = ""
+seasonName = "HL S23 test"
 
 # Input the gamemode that needs to be checked. HL for highlander, 6s for 6v6
-gameType = ""
+gameType = "HL"
 
 # Input whether you want to make the "Base Sheet" or the sheet to "iframe", leave blank to generate both
-sheetMode = ""
+sheetMode = "Base Sheet"
 
 # Don't edit anything past this point if you have no idea what you are doing
 
@@ -65,7 +65,10 @@ def mainSheet(oldCompID, compID, divList, teamIDList, counterDict, teamDict):
         baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="4", cols="20")
     except gspread.exceptions.WorksheetNotFound:
         baseSheet = sheet.add_worksheet(title=seasonName + " Base", rows="4", cols="20")
+
     compList6v6, compListHL = getCompList(oldCompID, compID)
+    print(compListHL)
+    print(compList6v6)
     counterList = []
     for value in counterDict.values():
         counterList.append(value)

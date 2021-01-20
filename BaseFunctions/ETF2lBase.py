@@ -49,10 +49,10 @@ def getCompList(oldID, currentID):
             oldID += 1
 
     compListHL = []
-    firstPageUrlHL = "https://api.etf2l.org/competition/list.json?per_page=100&category=Highlander%20Season&archived=1"
+    firstPageUrlHL = "https://api.etf2l.org/competition/list.json?per_page=100&category=Highlander%20Season"
     totalPages = requests.get(firstPageUrlHL).json()['page']['total_pages']
     for i in range(1, totalPages + 1):
-        pageUrl = "https://api.etf2l.org/competition/list/" + str(i) + ".json?per_page=100&category=Highlander%20Season&archived=1"
+        pageUrl = "https://api.etf2l.org/competition/list/" + str(i) + ".json?per_page=100&category=Highlander%20Season"
         data = requests.get(pageUrl).json()['competitions']
         for key in data.keys():
             compListHL.append(key)
