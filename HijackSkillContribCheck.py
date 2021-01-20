@@ -8,7 +8,7 @@ gameType = "6s"
 # Set the 2 competition ID's and the ID of the competition from which on forward results should be taken into account
 currentMainCompID6s = 674
 currentTopCompID6s = 675
-oldCompID6s = 652
+oldCompID6s = 662
 
 currentMainCompIDHL = 635
 currentTopCompIDHL = 642
@@ -19,7 +19,7 @@ currentHL = 7
 current6s = 4
 
 # Input the date and time the provisional tiers were released. Also input how far back the system should look for results of teams and players.
-date6s = "15/10/2020"
+date6s = "24/01/2020"
 hour6s = "23:59:00"
 
 dateHL = "27/07/2019"
@@ -77,12 +77,12 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
                                                                                                       HLMatchCount, SMatchCount, playerID, teamID, activePlayerIDlist, waterfall,
                                                                                                       currentMainCompID, currentTopCompID)
                     #RGL Skill Check Section
-                    #steamID64 = getSteamID64(playerID)
-                    #name, playerHistory = getPlayerHistory(steamID64)
-                    #if playerHistory != 0:
-                        #RGLplayerHL, RGLplayer6s = getDivisionPlayed(playerHistory, currentHL, current6s)
-                        #skillLevelHL, skillLevel6s = getSkillLevel(RGLplayerHL, RGLplayer6s)
-                        #teamHL, team6s = RGLtoETF2L(skillLevelHL, skillLevel6s, teamHL, team6s)
+                    # steamID64 = getSteamID64(playerID)
+                    # name, playerHistory = getPlayerHistory(steamID64)
+                    # if playerHistory != 0:
+                    #     RGLplayerHL, RGLplayer6s = getDivisionPlayed(playerHistory, currentHL, current6s)
+                    #     skillLevelHL, skillLevel6s = getSkillLevel(RGLplayerHL, RGLplayer6s)
+                    #     teamHL, team6s = RGLtoETF2L(skillLevelHL, skillLevel6s, teamHL, team6s)
 
         # Log output to the cosole for each team
         Sseperate = 'Prem: ' + str(team6s['prem']) + ', Div1: ' + str(team6s['div1']) + ', Div2: ' + str(team6s['div2']) + ', Mid: ' + str(team6s['mid']) + ', Low: ' + str(
