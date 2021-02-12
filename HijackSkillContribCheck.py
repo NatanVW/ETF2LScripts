@@ -72,9 +72,9 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
                         activePlayer = activePlayer + 1
                         if playerID not in activePlayerIDlist:
                             activePlayerIDlist.append(playerID)
-                    playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compList6v6, compListHL, previousFMC)
+                    playerHL, player6s, HLMatchCount, SMatchCount, previousFMC, tier = getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compList6v6, compListHL, previousFMC)
                     team6s, teamHl, skillContribTotal6s, skillContribTotalHL, waterfall = teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL,
-                                                                                                      HLMatchCount, SMatchCount, playerID, teamID, activePlayerIDlist, waterfall,
+                                                                                                      HLMatchCount, SMatchCount, playerID, teamID, tier, activePlayerIDlist, waterfall,
                                                                                                       currentMainCompID, currentTopCompID)
                     #RGL Skill Check Section
                     # steamID64 = getSteamID64(playerID)

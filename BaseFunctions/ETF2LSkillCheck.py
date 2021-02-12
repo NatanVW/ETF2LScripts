@@ -19,8 +19,8 @@ def getPlayerSkill(playerID, compList6v6, compListHL):
     except TypeError:
         NoMachtesPlayed = 1
 
-    playerHL = dict(prem=0, div1=0, high=0, mid=0, low=0, open=0)
-    player6s = dict(prem=0, div1=0, div2=0, mid=0, low=0, open=0)
+    playerHL = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0)
+    player6s = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0)
     HLMatchCount = 0
     SMatchCount = 0
 
@@ -45,7 +45,7 @@ def getPlayerSkill(playerID, compList6v6, compListHL):
 
 
 # Support function for getPlayerSkill, will do the calculations
-def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week, previousFMC):
+def playerSkill(compID, compList6v6, compListHL, playOff, tierName, tier, playerHL, player6s, HLMatchCount, SMatchCount, playerID, week, previousFMC):
     # Check match history to see what skill group the player belongs to
     if compID in compListHL:
         HLMatchCount = HLMatchCount + 1
@@ -66,18 +66,26 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
             elif "Division 2" in tierName:
                 playerHL['div1'] += 1
         else:
-            if tierName == "Premiership":
+            if tier == 28:
                 playerHL['prem'] += 1
-            elif "Division 1" in tierName:
+            elif tier == 24:
                 playerHL['div1'] += 1
-            elif tierName == "High" or "Division 2" in tierName or tierName == "High/Mid":
+            elif tier == 22:
                 playerHL['high'] += 1
-            elif tierName == "Mid" or "Division 3" in tierName or "Division 4" in tierName:
+            elif tier == 20:
+                playerHL['div2'] += 1
+            elif tier == 16:
+                playerHL['div3'] += 1
+            elif tier == 15:
                 playerHL['mid'] += 1
-            elif tierName == "Low" or "Division 5" in tierName:
+            elif tier == 12:
+                playerHL['div4'] += 1
+            elif tier == 9:
                 playerHL['low'] += 1
-            elif tierName == "Open" or "Division 6" in tierName:
-                playerHL['open'] += 1
+            elif tier == 8:
+                playerHL['div5'] += 1
+            elif tier == 4:
+                playerHL['div6'] += 1
 
     elif compID in compList6v6:
         SMatchCount = SMatchCount + 1
@@ -98,18 +106,26 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, pl
             elif "Division 2" in tierName:
                 player6s['div1'] += 1
         else:
-            if tierName == "Premiership":
+            if tier == 28:
                 player6s['prem'] += 1
-            elif "Division 1" in tierName:
+            elif tier == 24:
                 player6s['div1'] += 1
-            elif tierName == "High" or "Division 2" in tierName or "Division 3" in tierName:
+            elif tier == 22:
+                player6s['high'] += 1
+            elif tier == 20:
                 player6s['div2'] += 1
-            elif tierName == "Mid"  or "Division 4" in tierName:
+            elif tier == 16:
+                player6s['div3'] += 1
+            elif tier == 15:
                 player6s['mid'] += 1
-            elif tierName == "Low" or "Division 5" in tierName:
+            elif tier == 12:
+                player6s['div4'] += 1
+            elif tier == 9:
                 player6s['low'] += 1
-            elif tierName == "Open" or "Division 6" in tierName:
-                player6s['open'] += 1
+            elif tier == 8:
+                player6s['div5'] += 1
+            elif tier == 4:
+                player6s['div6'] += 1
 
     if int(compID) == 490:
         if week > 2:

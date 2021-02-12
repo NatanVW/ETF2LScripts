@@ -140,10 +140,10 @@ def getTeamDiv(ID, currentMainCompID, currentTopCompID):
     url = "https://api.etf2l.org/team/" + str(ID) + ".json"
     data = requests.get(url).json()
     try:
-        if data['team']['competitions'][str(currentMainCompID)]['division']['name'] is not None:
-            return data['team']['competitions'][str(currentMainCompID)]['division']['name']
+        if data['team']['competitions'][str(currentMainCompID)]['division']['skill_contrib'] is not None:
+            return data['team']['competitions'][str(currentMainCompID)]['division']['skill_contrib']
     except KeyError:
-        return data['team']['competitions'][str(currentTopCompID)]['division']['name']
+        return data['team']['competitions'][str(currentTopCompID)]['division']['skill_contrib']
 
 
 def getTeamName(teamID):

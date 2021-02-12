@@ -107,8 +107,8 @@ def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compLis
     except TypeError:
         NoMachtesPlayed = 1
 
-    playerHL = dict(prem=0, div1=0, high=0, mid=0, low=0, open=0)
-    player6s = dict(prem=0, div1=0, div2=0, mid=0, low=0, open=0)
+    playerHL = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0)
+    player6s = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0)
     HLMatchCount = 0
     SMatchCount = 0
 
@@ -121,106 +121,39 @@ def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compLis
         # Get ya data
         compID = str(match['competition']['id'])
         tierName = match['division']['name']
+        tier = match['division']['skill_contrib']
         playOff = match['competition']['name']
         if tierName == None and "Playoffs" not in playOff:
             continue
         week = match['week']
         if teamDiv == "Fresh":
-            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, fullCompList6v6, fullCompListHL, playOff, tierName, playerHL, player6s, HLMatchCount,
+            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, fullCompList6v6, fullCompListHL, playOff, tierName, tier, playerHL, player6s, HLMatchCount,
                                                                                      SMatchCount, playerID, week, previousFMC)
         else:
-            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount,
+            playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName, tier, playerHL, player6s, HLMatchCount, SMatchCount,
                                                                                      playerID, week, previousFMC)
 
-    return playerHL, player6s, HLMatchCount, SMatchCount, previousFMC
+    return playerHL, player6s, HLMatchCount, SMatchCount, previousFMC, tier
 
 
 # Add player to overall team stats, look at skill comparison with team
-def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL, HLMatchCount, SMatchCount, playerID, teamID, activePlayerIDlist, waterfall, currentMainCompID,
+def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL, HLMatchCount, SMatchCount, playerID, teamID, tier, activePlayerIDlist, waterfall, currentMainCompID,
                 currentTopCompID):
-    if player6s['prem'] >= 3:
-        team6s['prem'] += 1
-        playerScore = 6
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContrib6s(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotal6s += skillContrib
+    for key in player6s:
+        if player6s[key] >= 3:
+            team6s[key] += 1
+            if playerID in activePlayerIDlist:
+                skillContrib = getSkillContrib(teamID, tier, currentMainCompID, currentTopCompID)
+                skillContribTotal6s += skillContrib
+            break
 
-    elif player6s['div1'] >= 3:
-        team6s['div1'] += 1
-        playerScore = 5
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContrib6s(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotal6s += skillContrib
-
-    elif player6s['div2'] >= 3:
-        team6s['div2'] += 1
-        playerScore = 4
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContrib6s(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotal6s += skillContrib
-
-    elif player6s['mid'] >= 3:
-        team6s['mid'] += 1
-        playerScore = 3
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContrib6s(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotal6s += skillContrib
-
-    elif player6s['low'] >= 3:
-        team6s['low'] += 1
-        playerScore = 2
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContrib6s(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotal6s += skillContrib
-
-    elif player6s['open'] >= 3:
-        team6s['open'] += 1
-        playerScore = 1
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContrib6s(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotal6s += skillContrib
-
-    if playerHL['prem'] >= 3:
-        teamHL['prem'] += 1
-        playerScore = 6
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContribHL(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotalHL += skillContrib
-
-    elif playerHL['div1'] >= 3:
-        teamHL['div1'] += 1
-        playerScore = 5
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContribHL(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotalHL += skillContrib
-
-    elif playerHL['high'] >= 3:
-        teamHL['high'] += 1
-        playerScore = 4
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContribHL(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotalHL += skillContrib
-
-    elif playerHL['mid'] >= 3:
-        teamHL['mid'] += 1
-        playerScore = 3
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContribHL(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotalHL += skillContrib
-
-    elif playerHL['low'] >= 3:
-        teamHL['low'] += 1
-        playerScore = 2
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContribHL(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotalHL += skillContrib
-
-    elif playerHL['open'] >= 3:
-        teamHL['open'] += 1
-        playerScore = 1
-        if playerID in activePlayerIDlist:
-            skillContrib = getSkillContribHL(teamID, playerScore, currentMainCompID, currentTopCompID)
-            skillContribTotalHL += skillContrib
+    for key in playerHL:
+        if playerHL[key] >= 3:
+            teamHL[key] += 1
+            if playerID in activePlayerIDlist:
+                skillContrib = getSkillContrib(teamID, tier, currentMainCompID, currentTopCompID)
+                skillContribTotal6s += skillContrib
+            break
 
     if 0 <= HLMatchCount < 3:
         teamHL['none'] += 1
@@ -235,62 +168,11 @@ def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillCo
 
 
 # Calculates the total of the teams potential 6s skill contrib.
-def getSkillContrib6s(teamID, playerScore, currentMainCompID, currentTopCompID):
+def getSkillContrib(teamID, playerDiv, currentMainCompID, currentTopCompID):
     skillContrib = 0
-    teamDivName = getTeamDiv(teamID, currentMainCompID, currentTopCompID)
-    if teamDivName == "Premiership":
+    teamDiv = getTeamDiv(teamID, currentMainCompID, currentTopCompID)
+    if playerDiv > teamDiv:
+        skillContrib = playerDiv - teamDiv
         return skillContrib
-    elif teamDivName == "Division 1":
-        if playerScore > 5:
-            skillContrib += (playerScore - 5)
+    else:
         return skillContrib
-    elif teamDivName == "Division 2" or teamDivName == "High":
-        if playerScore > 4:
-            skillContrib += (playerScore - 4)
-        return skillContrib
-    elif teamDivName == "Mid":
-        if playerScore > 3:
-            skillContrib += (playerScore - 3)
-        return skillContrib
-    elif teamDivName == "Low":
-        if playerScore > 2:
-            skillContrib += (playerScore - 2)
-        return skillContrib
-    elif teamDivName == "Fresh" or teamDivName == "Open":
-        if playerScore > 1:
-            skillContrib += (playerScore - 1)
-        return skillContrib
-
-    return 0
-
-
-# Calculates the total of the teams potential HL skill contrib.
-def getSkillContribHL(teamID, playerScore, currentMainCompID, currentTopCompID):
-    skillContrib = 0
-    teamDivName = getTeamDiv(teamID, currentMainCompID, currentTopCompID)
-    if teamDivName == "Division 2":
-        teamDivName = "High"
-    if teamDivName == "Premiership":
-        return skillContrib
-    elif teamDivName == "Division 1":
-        if playerScore > 5:
-            skillContrib += (playerScore - 5)
-        return skillContrib
-    elif teamDivName == "High":
-        if playerScore > 4:
-            skillContrib += (playerScore - 4)
-        return skillContrib
-    elif teamDivName == "Mid":
-        if playerScore > 3:
-            skillContrib += (playerScore - 3)
-        return skillContrib
-    elif teamDivName == "Low" or teamDivName == "Open":
-        if playerScore > 2:
-            skillContrib += (playerScore - 2)
-        return skillContrib
-    elif teamDivName == "Fresh":
-        if playerScore > 1:
-            skillContrib += (playerScore - 1)
-        return skillContrib
-
-    return 0
