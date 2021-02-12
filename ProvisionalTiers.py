@@ -10,10 +10,9 @@ oldCompID = 611
 
 def main(oldCompId, compID):
     compList6v6, compListHL = getCompList(oldCompID, compID)
-    print(compList6v6)
     print(compListHL)
-    teamIDList = getTeamIDs(compID)
-    print(teamIDList)
+    #teamIDList = getTeamIDs(compID)
+    teamIDList = ['33315']
     for teamID in teamIDList:
         teamHL = dict(prem=0, div1=0, high=0, mid=0, low=0, open=0, none=0)
         team6s = dict(prem=0, div1=0, div2=0, mid=0, low=0, open=0, none=0)
