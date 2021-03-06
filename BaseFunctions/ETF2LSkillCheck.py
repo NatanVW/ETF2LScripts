@@ -19,8 +19,8 @@ def getPlayerSkill(playerID, compList6v6, compListHL):
     except TypeError:
         NoMachtesPlayed = 1
 
-    playerHL = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0)
-    player6s = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0)
+    playerHL = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0, none=0)
+    player6s = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0, none=0)
     HLMatchCount = 0
     SMatchCount = 0
 
@@ -33,12 +33,13 @@ def getPlayerSkill(playerID, compList6v6, compListHL):
         # Get ya data
         compID = str(match['competition']['id'])
         playOff = match['competition']['name']
+        tier = match['division']['skill_contrib']
         tierName = match['division']['name']
         if tierName == None and "Playoffs" not in playOff:
             continue
 
         week = match['week']
-        playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName, playerHL, player6s, HLMatchCount, SMatchCount, playerID,
+        playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName,tier, playerHL, player6s, HLMatchCount, SMatchCount, playerID,
                                                                                  week, previousFMC)
 
     return playerHL, player6s, HLMatchCount, SMatchCount, previousFMC
@@ -86,6 +87,8 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, tier, player
                 playerHL['div5'] += 1
             elif tier == 4:
                 playerHL['div6'] += 1
+            else:
+                playerHL['none'] +=1
 
     elif compID in compList6v6:
         SMatchCount = SMatchCount + 1
@@ -126,6 +129,8 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, tier, player
                 player6s['div5'] += 1
             elif tier == 4:
                 player6s['div6'] += 1
+            else:
+                player6s['none'] +=1
 
     if int(compID) == 490:
         if week > 2:
@@ -136,46 +141,15 @@ def playerSkill(compID, compList6v6, compListHL, playOff, tierName, tier, player
 
 # Add player to overall team stats, look at skill comparison with team
 def teamSkill(player6s, playerHL, team6s, teamHL, HLMatchCount, SMatchCount):
-    if player6s['prem'] >= 3:
-        team6s['prem'] += 1
+    for key in player6s:
+        if player6s[key] >= 3:
+            team6s[key] += 1
+            break
 
-    elif player6s['div1'] >= 3:
-        team6s['div1'] += 1
-
-    elif player6s['div2'] >= 3:
-        team6s['div2'] += 1
-
-    elif player6s['mid'] >= 3:
-        team6s['mid'] += 1
-
-    elif player6s['low'] >= 3:
-        team6s['low'] += 1
-
-    elif player6s['open'] >= 3:
-        team6s['open'] += 1
-
-    if playerHL['prem'] >= 3:
-        teamHL['prem'] += 1
-
-    elif playerHL['div1'] >= 3:
-        teamHL['div1'] += 1
-
-    elif playerHL['high'] >= 3:
-        teamHL['high'] += 1
-
-    elif playerHL['mid'] >= 3:
-        teamHL['mid'] += 1
-
-    elif playerHL['low'] >= 3:
-        teamHL['low'] += 1
-
-    elif playerHL['open'] >= 3:
-        teamHL['open'] += 1
-
-    if 0 <= HLMatchCount < 3:
-        teamHL['none'] += 1
-    if 0 <= SMatchCount < 3:
-        team6s['none'] += 1
+    for key in playerHL:
+        if playerHL[key] >= 3:
+            teamHL[key] += 1
+            break
 
     return team6s, teamHL
 
