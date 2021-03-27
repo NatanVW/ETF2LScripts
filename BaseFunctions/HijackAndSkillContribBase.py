@@ -111,6 +111,7 @@ def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compLis
     player6s = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0)
     HLMatchCount = 0
     SMatchCount = 0
+    tier = 0
 
     for i in range(0, NoMachtesPlayed):
         try:
@@ -122,6 +123,8 @@ def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compLis
         compID = str(match['competition']['id'])
         tierName = match['division']['name']
         tier = match['division']['skill_contrib']
+        if tier == None:
+            tier = 0
         playOff = match['competition']['name']
         if tierName == None and "Playoffs" not in playOff:
             continue

@@ -88,8 +88,8 @@ def setGameMode(gameType, currentMainCompID6s, currentTopCompID6s, oldCompID6s, 
         # Amount of active late players allowed to join after provisional tier release
         activeJoinLimit = 3
 
-        # Skill contribution point limit, set to 2 for 6s and 3 for HL
-        skillContribLimit = 2
+        # Skill contribution point limit, set to 7 for 6s and 14 for HL
+        skillContribLimit = 7
 
         # Set correct competitions ID's, date and hour of provisionals release for the gamemode
         currentMainCompID = currentMainCompID6s
@@ -102,7 +102,7 @@ def setGameMode(gameType, currentMainCompID6s, currentTopCompID6s, oldCompID6s, 
     elif gameType == "HL":
         activeJoinLimit = 5
 
-        skillContribLimit = 3
+        skillContribLimit = 14
 
         currentMainCompID = currentMainCompIDHL
         currentTopCompID = currentTopCompIDHL
@@ -136,6 +136,16 @@ def getTransfers(teamID, provisionalsRelease):
 
 
 # Check the division the team is in
+def getTeamDivName(ID, currentMainCompID, currentTopCompID):
+    url = "https://api.etf2l.org/team/" + str(ID) + ".json"
+    data = requests.get(url).json()
+    try:
+        if data['team']['competitions'][str(currentMainCompID)]['division']['name'] is not None:
+            return data['team']['competitions'][str(currentMainCompID)]['division']['name']
+    except KeyError:
+        return data['team']['competitions'][str(currentTopCompID)]['division']['name']
+
+# Check the division the team is in (Skill contrib values)
 def getTeamDiv(ID, currentMainCompID, currentTopCompID):
     url = "https://api.etf2l.org/team/" + str(ID) + ".json"
     data = requests.get(url).json()

@@ -1,4 +1,4 @@
-from BaseFunctions.ETF2lBase import getCompList, getTeamIDs, dateHourToUnix, getTransfers, setGameMode, getTeamDiv, getSteamID64
+from BaseFunctions.ETF2lBase import getCompList, getTeamIDs, dateHourToUnix, getTransfers, setGameMode, getTeamDiv, getSteamID64, getTeamDivName
 from BaseFunctions.HijackAndSkillContribBase import teamSkillHS, transferCheck, getPlayerSkillHS, activeLineup
 from BaseFunctions.RGLSkillCheck import getPlayerHistory, getSkillLevel, getDivisionPlayed, RGLtoETF2L
 
@@ -6,28 +6,28 @@ from BaseFunctions.RGLSkillCheck import getPlayerHistory, getSkillLevel, getDivi
 gameType = "6s"
 
 # Set the 2 competition ID's and the ID of the competition from which on forward results should be taken into account
-currentMainCompID6s = 674
-currentTopCompID6s = 675
-oldCompID6s = 662
+currentMainCompID6s = 690
+currentTopCompID6s = 691
+oldCompID6s = 652
 
-currentMainCompIDHL = 635
-currentTopCompIDHL = 642
-oldCompIDHL = 571
+currentMainCompIDHL = 686
+currentTopCompIDHL = 688
+oldCompIDHL = 648
 
-#RGL Competition Setup: current HL season number and current 6s season number
-currentHL = 7
-current6s = 4
+# RGL Competition Setup: current HL season number and current 6s season number
+currentHL = 8
+current6s = 5
 
 # Input the date and time the provisional tiers were released. Also input how far back the system should look for results of teams and players.
-date6s = "24/01/2020"
-hour6s = "23:59:00"
+date6s = "12/03/2021"
+hour6s = "00:12:00"
 
-dateHL = "27/07/2019"
-hourHL = "13:00:00"
+dateHL = "21/01/2021"
+hourHL = "00:22:00"
 daysToCheck = 7
 
 # Input the player id of players allowed as late joiners, between '' seperated by commas
-allowedPlayerIDlist6s = []
+allowedPlayerIDlist6s = ['121460', '70407', '63133', '92888', '42683']
 allowedPlayerIDlistHL = []
 
 
@@ -47,8 +47,8 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
 
     for teamID in teamIDList:
         activePlayerIDlist = []
-        teamHL = dict(prem=0, div1=0, high=0, mid=0, low=0, open=0, none=0)
-        team6s = dict(prem=0, div1=0, div2=0, mid=0, low=0, open=0, none=0)
+        teamHL = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0, none=0)
+        team6s = dict(prem=0, div1=0, high=0, div2=0, div3=0, mid=0, div4=0, low=0, div5=0, div6=0, open=0, none=0)
         activePlayer = 0
         totalJoins = 0
         playerScore = 0
@@ -62,17 +62,17 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
         else:
             playerIDList, totalJoins = transferCheck(transfers, teamID, allowedPlayerIDlist, daysToCheck, provisionalsRelease)
             if len(playerIDList) == 0:
-                teamDiv = ""
+                teamDivName = ""
                 continue
             else:
-                teamDiv = getTeamDiv(teamID, currentMainCompID, currentTopCompID)
+                teamDivName = getTeamDivName(teamID, currentMainCompID, currentTopCompID)
                 for playerID in playerIDList:
                     isActivePlayer = activeLineup(teamID, playerID, daysToCheck)
                     if isActivePlayer > 0:
                         activePlayer = activePlayer + 1
                         if playerID not in activePlayerIDlist:
                             activePlayerIDlist.append(playerID)
-                    playerHL, player6s, HLMatchCount, SMatchCount, previousFMC, tier = getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compList6v6, compListHL, previousFMC)
+                    playerHL, player6s, HLMatchCount, SMatchCount, previousFMC, tier = getPlayerSkillHS(playerID, teamDivName, fullCompList6v6, fullCompListHL, compList6v6, compListHL, previousFMC)
                     team6s, teamHl, skillContribTotal6s, skillContribTotalHL, waterfall = teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL,
                                                                                                       HLMatchCount, SMatchCount, playerID, teamID, tier, activePlayerIDlist, waterfall,
                                                                                                       currentMainCompID, currentTopCompID)
@@ -90,8 +90,8 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
         Hlseperate = 'Prem: ' + str(teamHL['prem']) + ', Div1: ' + str(team6s['div1']) + ', High: ' + str(teamHL['high']) + ', Mid: ' + str(teamHL['mid']) + ', Low: ' + str(
             teamHL['low']) + ', Open: ' + str(teamHL['open']) + ', None:' + str(teamHL['none'])
         if ((activePlayer >= activeJoinLimit or (skillContribTotal6s >= skillContribLimit)) and gameType == "6s") or (
-             (activePlayer >= activeJoinLimit or (skillContribTotalHL >= skillContribLimit)) and gameType == "HL") or (teamDiv == 'Open' and skillContribTotalHL >= skillContribLimit and gameType == "6s"):
-            print("[team id = " + str(teamID) + "], this team is a " + teamDiv + " team")
+             (activePlayer >= activeJoinLimit or (skillContribTotalHL >= skillContribLimit)) and gameType == "HL") or (teamDivName == 'Open' and skillContribTotalHL >= skillContribLimit and gameType == "6s"):
+            print("[team id = " + str(teamID) + "], this team is a " + teamDivName + " team")
             print("Number of joins since provisionals released: " + str(totalJoins))
             print("PlayerID of the joiners:")
             for playerID in playerIDList:
@@ -109,7 +109,7 @@ def main(currentMainCompID6s, currentTopCompID6s, oldCompID6s, currentMainCompID
         if len(waterfall) >= activeJoinLimit:
             print(
                 "\n -------------------------------- \n Team Detected by waterfall \n -------------------------------- \n")
-            print("[team id = " + str(teamID) + "], this team is a " + teamDiv + " team")
+            print("[team id = " + str(teamID) + "], this team is a " + teamDivName + " team")
             print("Number of joins since provisionals released: " + str(totalJoins))
             for waterfallID in waterfall:
                 print("[player id = " + str(
