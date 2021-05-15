@@ -136,17 +136,31 @@ def getPlayerSkillHS(playerID, teamDiv, fullCompList6v6, fullCompListHL, compLis
             playerHL, player6s, HLMatchCount, SMatchCount, previousFMC = playerSkill(compID, compList6v6, compListHL, playOff, tierName, tier, playerHL, player6s, HLMatchCount, SMatchCount,
                                                                                      playerID, week, previousFMC)
 
-    return playerHL, player6s, HLMatchCount, SMatchCount, previousFMC, tier
+    return playerHL, player6s, HLMatchCount, SMatchCount, previousFMC
 
 
 # Add player to overall team stats, look at skill comparison with team
-def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL, HLMatchCount, SMatchCount, playerID, teamID, tier, activePlayerIDlist, waterfall, currentMainCompID,
+def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillContribTotalHL, HLMatchCount, SMatchCount, playerID, teamID, activePlayerIDlist, waterfall, currentMainCompID,
                 currentTopCompID):
+    tier ={
+        "prem":28,
+        "div1":24,
+        "high":22,
+        "div2":20,
+        "div3":16,
+        "mid":15,
+        "div4":12,
+        "low":9,
+        "div5":8,
+        "div6":4,
+        "open":4,
+        "none":0,
+    }
     for key in player6s:
         if player6s[key] >= 3:
             team6s[key] += 1
             if playerID in activePlayerIDlist:
-                skillContrib = getSkillContrib(teamID, tier, currentMainCompID, currentTopCompID)
+                skillContrib = getSkillContrib(teamID, tier[key], currentMainCompID, currentTopCompID)
                 skillContribTotal6s += skillContrib
             break
 
@@ -154,8 +168,8 @@ def teamSkillHS(player6s, playerHL, team6s, teamHL, skillContribTotal6s, skillCo
         if playerHL[key] >= 3:
             teamHL[key] += 1
             if playerID in activePlayerIDlist:
-                skillContrib = getSkillContrib(teamID, tier, currentMainCompID, currentTopCompID)
-                skillContribTotal6s += skillContrib
+                skillContrib = getSkillContrib(teamID, tier[key], currentMainCompID, currentTopCompID)
+                skillContribTotalHL += skillContrib
             break
 
     if 0 <= HLMatchCount < 3:
