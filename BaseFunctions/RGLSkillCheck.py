@@ -3,16 +3,16 @@ import requests
 
 
 def getPlayerHistory(ID):
-    baseUrl = "https://payload.tf/api/rgl/" + str(ID)
+    baseUrl = "https://rgl.payload.tf/api/v1/profiles/" + str(ID)
     data = requests.get(baseUrl).json()
-    if "experience" in data:
+    if "experience" in data['data']:
         # If there is experience inside of the response we assume the player has history
-        return data['name'], data['experience']
+        return data['data']['name'], data['data']['experience']
     else:
         return 0,0
 
 def getDivisionPlayed(playerHistory,currentHL,current6s):
-    playerHL = dict(invite=0, advanced=0, main=0, intermediate=0, amateur=0, newcomer=0)
+    playerHL = dict(invite=0, challenger=0, advanced=0, main=0, intermediate=0, amateur=0, newcomer=0)
     player6s = dict(invite=0, advanced=0, main=0, intermediate=0, amateur=0, newcomer=0)
     for i in range(0,len(playerHistory)):
         if playerHistory[i]['category']=="highlander" and (playerHistory[i]['season']=="hl season " + str(currentHL) or playerHistory[i]['season']=="hl season " + str(currentHL-1) or playerHistory[i]['season']=="hl season " + str(currentHL-2)):
